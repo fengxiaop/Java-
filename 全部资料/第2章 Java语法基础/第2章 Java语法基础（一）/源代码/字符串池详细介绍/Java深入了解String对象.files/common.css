@@ -1,0 +1,30 @@
+ {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+.clear {
+	CLEAR: both
+}
+.redfont {
+	COLOR: red
+}
+.grayfont {
+	COLOR: #999999
+}
+#globalheader {
+	BACKGROUND: url(../image/toolbarbg.jpg) #eeeeee repeat-x left top; WIDTH: 100%; COLOR: #000000; LINE-HEIGHT: 28px; HEIGHT: 28px
+}
+#globalheader A {
+	COLOR: #333333
+}
+#globalheader #logo {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 20px; FLOAT: left; PADDING-BOTTOM: 0px; PADDING-TOP: 0px
+}
+#globalheader #menu {
+	PADDING-RIGHT: 20px; PADDING-LEFT: 10px; FLOAT: right; PADDING-BOTTOM: 0px; PADDING-TOP: 0px
+}
+#footer {
+	CLEAR: both; MARGIN-TOP: 30px
+}
+#footer P {
+	HEIGHT: 25px; TEXT-ALIGN: center
+}

@@ -1,0 +1,117 @@
+BODY {
+	FONT-SIZE: 12px; BACKGROUND: url(bg2.jpg) #a80a00 no-repeat center 30px; LINE-HEIGHT: 20px
+}
+A {
+	COLOR: #8f0101; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #8f0101; TEXT-DECORATION: underline
+}
+#header {
+	MARGIN: auto; WIDTH: 960px; HEIGHT: 250px
+}
+#header #title {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 40px; FONT-WEIGHT: bold; FONT-SIZE: 18px; PADDING-BOTTOM: 10px; COLOR: #ffffff; PADDING-TOP: 100px
+}
+#header A {
+	COLOR: #ffffff
+}
+#footer A {
+	COLOR: #ffffff
+}
+#header #url {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 40px; PADDING-BOTTOM: 10px; PADDING-TOP: 0px
+}
+#sidebar {
+	FLOAT: left; WIDTH: 250px
+}
+.component1 {
+	BORDER-RIGHT: #9c9c9c 1px solid; BORDER-TOP: #9c9c9c 1px solid; MARGIN-BOTTOM: 15px; BORDER-LEFT: #9c9c9c 1px solid; BORDER-BOTTOM: #9c9c9c 1px solid; BACKGROUND-COLOR: #ffffff
+}
+.component1 H1 {
+	PADDING-LEFT: 10px; FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #8f0101; LINE-HEIGHT: 22px; HEIGHT: 22px; BACKGROUND-COLOR: #f0c832
+}
+.component1 .content {
+	PADDING-RIGHT: 6px; PADDING-LEFT: 6px; PADDING-BOTTOM: 6px; PADDING-TOP: 6px
+}
+.component1 LI {
+	MARGIN-LEFT: 20px; LIST-STYLE-TYPE: disc
+}
+#mainbody {
+	MARGIN: auto; WIDTH: 960px
+}
+#maincontent {
+	BORDER-RIGHT: #9c9c9c 1px solid; BORDER-TOP: #9c9c9c 1px solid; FLOAT: right; BORDER-LEFT: #9c9c9c 1px solid; WIDTH: 700px; BORDER-BOTTOM: #9c9c9c 1px solid; BACKGROUND-COLOR: #ffffff
+}
+#maincontent H1 {
+	PADDING-LEFT: 10px; FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #8f0101; LINE-HEIGHT: 22px; HEIGHT: 22px; BACKGROUND-COLOR: #f0c832
+}
+#maincontent #articlelist {
+	PADDING-RIGHT: 15px; PADDING-LEFT: 15px; PADDING-BOTTOM: 15px; MARGIN: 15px; PADDING-TOP: 15px
+}
+#maincontent #articlelist .article {
+	MARGIN-BOTTOM: 20px; PADDING-BOTTOM: 10px; BORDER-BOTTOM: #aaa 1px dashed
+}
+#maincontent .top {
+	FONT-WEIGHT: bold; COLOR: red
+}
+#articlelist .article H2 {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; HEIGHT: 30px
+}
+#articlelist .article H2 .issuedate {
+	PADDING-LEFT: 20px; FONT-WEIGHT: normal; FONT-SIZE: 12px; COLOR: #999999
+}
+#articlelist .article .otherinfo {
+	TEXT-ALIGN: right
+}
+#articlelist .turnall A {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; COLOR: red
+}
+#articlelist .arttitlelist LI {
+	FONT-SIZE: 14px; LINE-HEIGHT: 30px; HEIGHT: 30px
+}
+#articlelist .arttitlelist LI .issuedate {
+	PADDING-LEFT: 20px; FONT-SIZE: 12px; COLOR: #999999
+}
+#pagelist {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; PADDING-BOTTOM: 10px; PADDING-TOP: 10px; TEXT-ALIGN: center
+}
+#pagelist A {
+	BORDER-RIGHT: #c9caca 1px solid; PADDING-RIGHT: 6px; BORDER-TOP: #c9caca 1px solid; PADDING-LEFT: 6px; PADDING-BOTTOM: 2px; MARGIN-LEFT: 5px; BORDER-LEFT: #c9caca 1px solid; PADDING-TOP: 3px; BORDER-BOTTOM: #c9caca 1px solid; BACKGROUND-COLOR: #ffffff
+}
+#pagelist .curpage {
+	BORDER-RIGHT: #c9caca 1px solid; PADDING-RIGHT: 6px; BORDER-TOP: #c9caca 1px solid; PADDING-LEFT: 6px; FONT-WEIGHT: bold; PADDING-BOTTOM: 2px; MARGIN-LEFT: 5px; BORDER-LEFT: #c9caca 1px solid; COLOR: #fff; PADDING-TOP: 3px; BORDER-BOTTOM: #c9caca 1px solid; BACKGROUND-COLOR: #999
+}
+#articleinfo {
+	PADDING-RIGHT: 20px; PADDING-LEFT: 20px; PADDING-BOTTOM: 20px; PADDING-TOP: 20px
+}
+#articleinfo H2 {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; HEIGHT: 30px
+}
+#articleinfo H2 .issuedate {
+	PADDING-LEFT: 20px; FONT-WEIGHT: normal; FONT-SIZE: 12px; COLOR: #999999
+}
+#articleinfo .tag {
+	PADDING-BOTTOM: 10px; LINE-HEIGHT: 30px; HEIGHT: 30px; TEXT-ALIGN: right
+}
+#articleinfo .otherinfo {
+	LINE-HEIGHT: 30px; PADDING-TOP: 10px; HEIGHT: 30px; TEXT-ALIGN: right
+}
+#commentlist H2 {
+	PADDING-LEFT: 10px; FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #8f0101; LINE-HEIGHT: 22px; HEIGHT: 22px; BACKGROUND-COLOR: #f0c832
+}
+#addcomment H2 {
+	PADDING-LEFT: 10px; FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #8f0101; LINE-HEIGHT: 22px; HEIGHT: 22px; BACKGROUND-COLOR: #f0c832
+}
+#commentlist DL {
+	MARGIN: 15px; BORDER-BOTTOM: #aaa 1px dashed
+}
+#commentlist DT {
+	COLOR: #666666
+}
+#addcomment P {
+	MARGIN-LEFT: 20px; LINE-HEIGHT: 30px
+}
+#footer P {
+	COLOR: #fff
+}

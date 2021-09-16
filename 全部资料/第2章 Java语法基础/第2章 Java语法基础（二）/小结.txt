@@ -1,0 +1,13 @@
+1、Java的各种运算符
+
+2、一批要重点认识的类
+	2.1 一个默认引用的包：java.lang.*;
+
+	2.2 java.lang包中常用类
+	1)Object:所有类的根类
+
+	2)Math
+
+	3)封装类：基本数据类型对应的类
+	Byte	Short	Integer	Long	Float	Double	Boolean	Character
+

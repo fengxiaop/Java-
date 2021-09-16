@@ -1,0 +1,64 @@
+1、定义一个最简单的方法
+public class Demo{
+
+	public static void show(){
+
+	}
+
+	public static void main(String args[]){
+		show();
+		Demo.show();
+	}
+}
+1.1 show()方法虽然简单，方法体仅有一对{ }，但是语法是正确的，是一个最简洁的方法的定义
+1.2 方法调用，两种方式
+	1) 直接在main方法中调用：show();
+	2) 采用类名.方法名模式：Demo.show();
+
+
+2、方法返回类型定义后，注意三处一致
+public class Demo{
+
+	public static int fun(){	//1 这里规定了返回值必须是int
+		return 1;		//2 对应类型要求，返回的值是一个整数值1，当然也能是任意其他整数值
+	}
+
+	public static void main(String args[]){		
+		int i=Demo.fun();	//3 这里的int i接收返回的整数值
+	}
+}
+
+3、参数列表：方法的重载
+public class Demo{
+
+	public static void test(int i,int j){	//3.4 i,j形式参数    
+		
+	}
+
+	public static void test(String i,String j){ 
+				
+	}
+
+	public static void main(String args[]){		
+		int a=10,b=20;
+		Demo.test(a,b);
+		Demo.test(1,2);			//3.4 这里的a,b和1,2都是实际参数
+		Demo.test("HH","WW");			
+	}
+}
+3.1 方法参数最重要的用法是可以参与计算；
+3.2 但没有规定参数一定要参与运算，参数列表还一个用法是当“占位符”，
+    参数列表作为占位符，实际是“方法的签名”，可以区别同名方法，从而实现方法的重载
+3.3 方法重载相关概念	
+	1)同一个类里面的同名方法，由参数列表区别
+	2)参数列表不同的判断依据：
+	参数个数不同、参数类型不同、有多个参数时，参数的排列顺序不同；
+	参数名的排列顺序不同，不能作为依据；
+	方法返回类型不同，不能作为依据。	
+
+
+
+
+
+
+

@@ -1,0 +1,46 @@
+1、了解jdk帮助文档的使用
+
+2、Java的注释：
+1)	\\
+
+2)	\*		*\
+
+3)	\**
+	*
+	*
+	*/
+
+3、Java的标识符命名规则
+
+4、基本数据类型（8个）
+	1)byte short int long
+	2)double float
+	3)char
+	4)boolean
+
+
+5、字符串的定义以及字符串判断相等的两种方式“==”和“equals()”的区别
+	public class Demo{
+		public static void main(String args[]){
+			String str=new String("Hello");		//字符串定义方式一		
+		}
+	}
+	此段代码将在内存中产生两个字符串“Hello”，一个是在字符串池中，另一个是在堆空间中
+
+
+	String str="Hello";					//字符串定义方式二
+
+
+      补充：对变量进堆栈知识的讲解：
+      1、普通的变量定义和赋值，如int a=1;是在“栈”空间中的，
+      变量用完后，空间可以自动释放。
+
+      2、在Java语言中，new关键字开辟的存储空间，是在动态堆空间中的，
+	变量用完后，空间也可以自动释放，但毕竟是两块不同的内存区域，	
+	导致比较时，“==”和equal函数有区别；
+
+
+
+
+
+

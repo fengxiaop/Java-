@@ -1,0 +1,252 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0037)http://blog.pfan.cn/txdnet/36493.html -->
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>Java深入了解String对象 -- Happy漫步者花园pFan-Blog -- 编程爱好者博客</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<META content="Java深入了解String对象 -- Happy漫步者花园pFan-Blog -- 编程爱好者博客" 
+name=description>
+<META content=编程,开发,编程论坛,程序员,博客,编程博客 name=keywords><LINK 
+href="Java深入了解String对象.files/common.css" type=text/css rel=stylesheet><LINK 
+href="Java深入了解String对象.files/new2.css" type=text/css rel=stylesheet>
+<SCRIPT type=text/javascript>
+<!--
+function strLen(str)
+{
+	var Chinese_OS;
+	var strTest, ch, slen, i;
+	Chinese_OS = false;
+	strTest = "中文";
+	if ( strTest.length == 2 ) Chinese_OS = true;
+	if ( Chinese_OS ) {
+		slen = 0;
+		for ( i=0; i< str.length; i++){
+			ch = str.charCodeAt( i );
+			if ( ch<0 ) ch = ch + 65536;
+			if ( ch>255 ) slen = slen +1;
+			slen = slen +1;
+		}
+	}
+	else
+	{
+		slen = str.length
+	}
+	return (slen);
+}
+
+function isEmail(str){
+	var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+	return reg.test(str);
+}
+
+function check(form) {     
+	if (form.getcode && (form.getcode.value)=="")
+	{
+		alert("请输入验证码！");     
+		return false; 
+	}
+	if (strLen(form.content.value)==0)
+	{
+		alert("请输入内容！");     
+		return false; 
+	}
+	if (strLen(form.content.value)>500)
+	{
+		alert("您输入的内容超过了500字，请修改后再发送！");     
+		return false; 
+	}
+	if (form.email.value.length > 0)
+	{
+		if(!isEmail(form.email.value))
+		{
+			alert("Email格式不正确！");     
+			return false; 
+		}
+	}
+	form.btn_submit.value = "评论提交中，请稍后";
+	form.btn_submit.disabled = true;
+	return true;     
+	form.submit();     
+}
+
+var iscode = 0;
+function txtfocus(){
+	if (iscode == 0)
+	{
+		document.getElementById('code').innerHTML="验证码: <input name=\"getcode\" type=\"text\" size=\"6\" maxlength=\"6\"><img src=\"http://blog.pfan.cn/code.asp\">  <input type=\"submit\" name=\"btn_submit\" value=\"提交\">"; 
+		iscode = 1;
+	}
+}
+//-->
+</SCRIPT>
+
+<META content="MSHTML 6.00.2900.5583" name=GENERATOR></HEAD>
+<BODY>
+<DIV id=globalheader>
+<DIV id=logo><A href="http://blog.pfan.cn/">登陆</A> | <A 
+href="http://www.programfan.com/reg.asp">注册新用户</A> </DIV>
+<DIV id=menu><A href="http://blog.pfan.cn/">编程爱好者博客</A> | <A 
+href="http://www.programfan.com/">编程爱好者首页</A> </DIV></DIV>
+<DIV id=header>
+<DIV id=title>Happy漫步者花园pFan-Blog</DIV>
+<DIV id=url><A 
+href="http://blog.pfan.cn/txdnet">http://blog.pfan.cn/txdnet</A></DIV></DIV>
+<DIV id=mainbody>
+<DIV id=sidebar>
+<DIV class=component1 id=bloginfo>
+<H1>博主介绍</H1>
+<P class=content>
+<CENTER>博主：<BR><IMG height=160 src="Java深入了解String对象.files/noimage.gif" 
+width=150></CENTER>
+<P></P>
+<P class=content>Blog|JSP|PHP|IT|Welcome!&nbsp; </P></DIV>
+<DIV class=component1 id=arttype>
+<H1>文章分类</H1>
+<UL class=content>
+  <LI><A href="http://blog.pfan.cn/txdnet/articlelist_4709_8365_1.html">it新闻</A>
+  <LI><A 
+  href="http://blog.pfan.cn/txdnet/articlelist_4709_7026_1.html">java/jsp</A>
+  <LI><A 
+  href="http://blog.pfan.cn/txdnet/articlelist_4709_7027_1.html">javascript/html/css</A>
+  <LI><A href="http://blog.pfan.cn/txdnet/articlelist_4709_7028_1.html">生活</A>
+  <LI><A href="http://blog.pfan.cn/txdnet/articlelist_4709_7029_1.html">社会</A>
+  <LI><A href="http://blog.pfan.cn/txdnet/articlelist_4709_7030_1.html">情感</A>
+  <LI><A href="http://blog.pfan.cn/txdnet/articlelist_4709_7098_1.html">web</A> 
+  <LI><A href="http://blog.pfan.cn/txdnet/articlelist_4709_0_1.html">所有文章</A> 
+  </LI></UL></DIV></DIV>
+<DIV id=maincontent>
+<H1>正文</H1>
+<DIV id=articleinfo>
+<H2>Java深入了解String对象<SPAN class=issuedate>(2008-7-6 11:36:00)</SPAN></H2>
+<P><A title="保存至编程爱好者收藏夹 myweb.pfan.cn" 
+href="javascript:d=document;t=d.selection?(d.selection.type!='None'?d.selection.createRange().text:''):(d.getSelection?d.getSelection():'');void(myweb=window.open('http://myweb.pfan.cn/mywebedit.asp?title='+escape(d.title)+'&amp;url='+escape(d.location.href),'myweb','scrollbars=no,width=480,height=480,left=75,top=20,status=no,resizable=yes'));">【收藏】</A> 
+<A href="http://blog.pfan.cn/txdnet/36493.html#comment">【评论】</A> <A 
+href="javascript:window.print()">【打印】</A> <A 
+href="javascript:window.close()">【关闭】</A> </P>
+<P class=tag>标签:<A href="http://blog.pfan.cn/list.asp?blogid=4709&amp;tag=java" 
+target=_blank>java</A>&nbsp;<A 
+href="http://blog.pfan.cn/list.asp?blogid=4709&amp;tag=String" 
+target=_blank>String</A>&nbsp; </P>
+<DIV id=content>
+<DIV><STRONG>一,从根本上认识java.lang.String类和String池 
+<BR></STRONG>首先,我建议先看看String类的源码实现,这是从本质上认识String类的根本出发点.从中可以看到: 
+<BR>1,String类是final的,不可被继承.public final class String. 
+<BR>2,String类是的本质是字符数组char[], 并且其值不可改变.private final char value[]; 
+<BR>然后打开String类的API文档,可以发现: <BR>3,String类对象有个特殊的创建的方式,就是直接指定比如String x = 
+"abc","abc"就表示一个字符串对象.而x是"abc"对象的地址,也叫做"abc"对象的引用. 
+<BR>4,String对象可以通过"+"串联.串联后会生成新的字符串.也可以通过concat()来串联,这个后面会讲述. 
+5,创建字符串的方式很多,归纳起来有三类: <BR>其一,使用new关键字创建字符串,比如String s1 = new String("abc"); 
+<BR>其二,直接指定.比如String s2 = "abc"; <BR>其三,使用串联生成新的字符串.比如String s3 = "ab" + "c"; 
+<BR>6,Java运行时会维护一个String 
+Pool(String池),JavaDoc翻译很模糊"字符串缓冲区".String池用来存放运行时中产生的各种字符串,并且池中的字符串的内容不重复.而一般对象不存在这个缓冲池,并且创建的对象仅仅存在于方法的堆栈区.下面是个系统内存示意图:<BR><B>二,String对象的创建 
+</B><BR>String对象的创建也很讲究,关键是要明白其原理. 
+<BR>原理1:当使用任何方式来创建一个字符串对象s时,Java运行时(运行中JVM)会拿着这个X在String池中找是否存在内容相同的字符串对象,如果不存在,则在池中创建一个字符串s,否则,不在池中添加.<BR>原理2:Java中,只要使用new关键字来创建对象,则一定会(在堆区或栈区)创建一个新的对象.<BR>原理3:使用直接指定或者使用纯字符串串联来创建String对象,则仅仅会检查维护String池中的字符串,池中没有就在池中创建一个,有则罢了!但绝不会在堆栈区再去创建该String对象.<BR>原理4:使用包含变量的表达式来创建String对象,则不仅会检查维护String池,而且还会在堆栈区创建一个String对象.<BR>另外,String的intern()方法是一个本地方法,定义为public 
+native String intern(); intern()方法的价值在于让开发者能将注意力集中到String池上.当调用 intern 
+方法时,如果池已经包含一个等于此 String 对象的字符串(该对象由 equals(Object) 方法确定),则返回池中的字符串.否则,将此 String 
+对象添加到池中,并且返回此 String 对象的引用. <BR>最后,有几点问题请大家注意:String a; 与String 
+a=null在作为类变量时候是等价的,在局部变量则不同.null表示一个空引用,String 
+a=null意思是在栈中声明了a,但是这个a没有指向任何地址.此时我们注意到String a 
+在栈中声明了a,但是也没有指向任何地址,但是java的语法检查如果在局部变量中,String a;是不能直接使用的,String 
+a=null中的这个a可以直接使用.<BR><B>三,经常会问到的问题</B><BR>1,"abc"与new String("abc");<BR>String 
+s = new String("abc");创建了几个String Object?(如这里创建了多少对象? 和一道小小的面试题 
+)<BR>这个问题比较简单,涉及的知识点包括:<BR>引用变量与对象的区别; <BR>字符串文字"abc"是一个String对象; <BR>文字池[pool 
+of literal 
+strings]和堆[heap]中的字符串对象.<BR><BR>引用变量与对象:除了一些早期的Java书籍和现在的垃圾书籍,人们都可以从中比较清楚地学习到两者的区别.A 
+aa;语句声明一个类A的引用变量aa[我常常称之为句柄],而对象一般通过new创建.所以题目中s仅仅是一个引用变量,它不是对象.[ref 
+句柄,引用与对象]<BR>Java中所有的字符串文字[字符串常量]都是一个String的对象.有人[特别是C程序员]在一些场合喜欢把字符串"当作/看成"字符数组,这也没有办法,因为字符串与字符数组存在一些内在的联系.事实上,它与字符数组是两种完全不同的对象.<BR>System.out.println("Hello".length());<BR>char[] 
+cc={'H','i'};<BR>System.out.println(cc.length);<BR>字符串对象的创建:由于字符串对象的大量使用[它是一个对象,一般而言对象总是在heap分配内存],Java中为了节省内存空间和运行时间[如比较字符串时,==比equals()快],在编译阶段就把所有的字符串文字放到一个文字池[pool 
+of literal 
+strings]中,而运行时文字池成为常量池的一部分.文字池的好处,就是该池中所有相同的字符串常量被合并,只占用一个空间.我们知道,对两个引用变量,使用==判断它们的值[引用]是否相等,即指向同一个对象:<BR>String 
+s1 = "abc" ;<BR>String s2 = "abc" ;<BR>if( s1 == s2 ) System.out.println("s1,s2 
+refer to the same object");<BR>else 
+System.out.println("trouble");<BR>这里的输出显示,两个字符串文字保存为一个对象.就是说,上面的代码只在pool中创建了一个String对象.<BR>现在看String 
+s = new String("abc");语句,这里"abc"本身就是pool中的一个对象,而在运行时执行new 
+String()时,将pool中的对象复制一份放到heap中,并且把heap中的这个对象的引用交给s持有.ok,这条语句就创建了2个String对象.<BR>String 
+s1 = new String("abc") ;<BR>String s2 = new String("abc") ;<BR>if( s1 == s2 ){ 
+//不会执行的语句}<BR>这时用==判断就可知,虽然两个对象的"内容"相同[equals()判断],但两个引用变量所持有的引用不同,<BR>BTW:上面的代码创建了几个String 
+Object? [三个,pool中一个,heap中2个.]<BR>[Java2 认证考试学习指南 (第4版)( 
+英文版)p197-199有图解.]<BR>2,字符串的+运算和字符串转换<BR>字符串转换和串接是很基础的内容,因此我以为这个问题简直就是送分题.事实上,我自己就答错了.<BR>String 
+str = new String("jf"); // jf是接分<BR>str = 
+1+2+str+3+4;<BR>一共创建了多少String的对象?[我开始的答案:5个.jf,new,3jf,3jf3,3jf34]<BR>首先看JLS的有关论述:<BR>一,字符串转换的环境[JLS 
+5.4 String 
+Conversion]<BR>字符串转换环境仅仅指使用双元的+运算符的情况,其中一个操作数是一个String对象.在这一特定情形下,另一操作数转换成String,表达式的结果是这两个String的串接.<BR>二,串接运算符[JLS 
+15.18.1 String Concatenation Operator + 
+]<BR>如果一个操作数/表达式是String类型,则另一个操作数在运行时转换成一个String对象,并两者串接.此时,任何类型都可以转换成String.[这里,我漏掉了"3"和"4"]<BR>如果是基本数据类型,则如同首先转换成其包装类对象,如int 
+x视为转换成Integer(x). <BR>现在就全部统一到引用类型向String的转换了.这种转换如同[as 
+if]调用该对象的无参数toString方法.[如果是null则转换成"null"].因为toString方法在Object中定义,故所有的类都有该方法,而且Boolean, 
+Character, Integer, Long, Float, Double, and String改写了该方法. 
+<BR>关于+是串接还是加法,由操作数决定.1+2+str+3+4 就很容易知道是"3jf34".[BTW 
+:在JLS的15.18.1.3中举的一个jocular little 
+example,真的很无趣.]<BR>下面的例子测试了改写toString方法的情况..<BR><SPAN 
+style="COLOR: #000080">class A<BR>{ int i = 10; <BR>public static void 
+main(String []args)<BR>{ String str = new String("jf"); <BR>str += new A(); 
+<BR>System.out.print(str); <BR>} <BR>public String toString(){ return " a.i 
+="+i+"\n"; }<BR>}</SPAN><BR>三,字符串转换的优化<BR>按照上述说法,str = 
+1+2+str+3+4;语句似乎应该就应该生成5个String对象:<BR><SPAN style="COLOR: #000080">1+2 ＝3,then 
+3→Integer(3)→"3" in pool? [假设如此] <BR>"3"+str(in heap) = "3jf" (in heap) 
+<BR>"3jf" +3 ,first 3→Integer(3)→"3" in pool? [则不创建] then "3jf3" <BR>"3jf3"+4 
+create "4" in pool <BR>then 
+"3jf34"</SPAN><BR>这里我并不清楚3,4转换成字符串后是否在池中,所以上述结果仍然是猜测.<BR>为了减少创建中间过渡性的字符串对象,提高反复进行串接运算时的性能,a 
+Java compiler可以使用StringBuffer或者类似的技术,或者把转换与串接合并成一步.例如:对于 a + b + c 
+,Java编译器就可以将它视为[as if]<BR><SPAN style="COLOR: #000080">new 
+StringBuffer().append(a).append(b).append(c).toString();</SPAN><BR>注意,对于基本类型和引用类型,在append(a)过程中仍然要先将参数转换,从这个观点看,str 
+= 1+2+str+3+4;创建的字符串可能是"3","4"和"3jf34"[以及一个StringBuffer对象].<BR>现在我仍然不知道怎么回答str = 
+1+2+str+3+4;创建了多少String的对象,.或许,这个问题不需要过于研究,至少SCJP不会考它.<BR>3,这又不同:str = 
+"3"+"jf"+"3"+"4";<BR>如果是一个完全由字符串文字组成的表达式,则在编译时,已经被优化而不会在运行时创建中间字符串.测试代码如下:<BR><SPAN 
+style="COLOR: #000080">String str1 ="3jf34"; <BR>String str2 ="3"+"jf"+"3"+"4"; 
+<BR>if(str1 == str2) { System.out.println("str1 == str2"); }<BR>else { 
+System.out.println("think again"); } <BR>if(str2.equals(str1)) 
+System.out.println("yet 
+str2.equals(str1)");</SPAN><BR>可见,str1与str2指向同一个对象,这个对象在pool中.所有遵循Java Language 
+Spec的编译器都必须在编译时对constant expressions 进行简化.JLS规定:Strings computed by constant 
+expressions (&yacute;15.28) are computed at compile time and then treated as if they 
+were literals.<BR>对于String str2 
+="3"+"jf"+"3"+"4";我们说仅仅创建一个对象.注意,"创建多少对象"的讨论是说运行时创建多少对象.<BR>BTW:编译时优化<BR><SPAN 
+style="COLOR: #000080">String x = "aaa " + "bbb "; <BR>if (false) { x = x + "ccc 
+"; } <BR>x += "ddd "; <BR>等价于: String x = "aaa bbb "; x = x + "ddd 
+";</SPAN><BR>//这个地方我自己进行了编译,不过和他的结论不一样,好像当用x+="ddd"的时候和直接的x="aaa"+"bbb"+"ddd" 
+不同,但是具体为什么我也不清楚,正在研究中...<BR>4,不变类<BR>String对象是不可改变的(immutable).有人对str = 
+1+2+str+3+4;语句提出疑问,怎么str的内容可以改变?其实仍然是因为不清楚:引用变量与对象的区别.str仅仅是引用变量,它的值??它持有的引用可以改变.你不停地创建新对象,我就不断地改变指向.[参考TIJ的Read-only 
+classes.]<BR>不变类的关键是,对于对象的所有操作都不可能改变原来的对象[只要需要,就返回一个改变了的新对象].这就保证了对象不可改变.为什么要将一个类设计成不变类?有一个OOD设计的原则:Law 
+of Demeter.其广义解读是:使用不变类.只要有可能,类应当设计为不变类.</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>--------</DIV>
+<DIV><A 
+href="http://www.txdnet.cn/ShowListEssay-2-1-Txdnet.jsp">http://www.txdnet.cn/ShowListEssay-2-1-Txdnet.jsp</A></DIV></DIV>
+<P class=otherinfo>阅读（1635） | 评论（0）| <A 
+onclick="window.clipboardData.setData('text','http://blog.pfan.cn/txdnet/36493.html');alert('链接复制成功');" 
+href="javascript:;">复制链接</A></P>
+<P 
+class=grayfont><BR>版权声明：编程爱好者网站为此博客服务提供商，如本文牵涉到版权问题，编程爱好者网站不承担相关责任，如有版权问题请直接与本文作者联系解决。谢谢！</P><!--<p class="trackback"><a name="trackback"></a>引用地址：<a href="http://blog.pfan.cn/trackback.asp?id=36493">http://blog.pfan.cn/trackback.asp?id=36493</a>//-->
+<DIV id=commentlist>
+<H2>评论<A name=comment></A></H2>
+<CENTER>暂无评论</CENTER></DIV>
+<DIV id=addcomment>
+<H2>发表评论<A name=addcomment></A></H2>
+<FORM name=frm_comment onsubmit="return check(this);" method=post><INPUT 
+type=hidden value=36493 name=articleid> <INPUT type=hidden value=4709 
+name=blogid> 
+<P>您的昵称: <INPUT maxLength=20 size=30 name=name> 昵称不填为“匿名”</P>
+<P>您的Email: <INPUT maxLength=50 size=30 name=email> （可选） </P>
+<P>评论内容:(字数请控制在500字以内)<BR><TEXTAREA onfocus=txtfocus() name=content rows=8 cols=80></TEXTAREA> 
+</P>
+<P id=code></P></FORM></DIV></DIV></DIV></DIV>
+<DIV id=footer>
+<DIV id=globalfooter>
+<P><A href="http://www.programfan.com/aboutus.asp">关于本站</A> - <A 
+href="http://www.programfan.com/daohang.asp">网站导航</A> - <!--<a href="http://www.programfan.com/ad.asp">广告服务</a> - //--><A 
+href="http://www.programfan.com/joinus.asp">诚邀加盟</A> - <A 
+href="http://www.programfan.com/contact.asp?subject=关于网站">联系站长</A> - <A 
+href="http://www.programfan.com/friendlink.asp">友情链接</A> - <A 
+href="http://www.programfan.com/sponsor.asp">赞助本站</A> </P>
+<P>Copyright&copy; 1999-2011 Programfan.com. All Rights Reserved</P>
+<P>网站制作&amp;维护：Hannibal &nbsp;&nbsp;&nbsp;Email: <A 
+href="mailto:webmaster@pfan.cn">webmaster@pfan.cn</A></P></DIV>
+<DIV style="DISPLAY: none">-
+<SCRIPT language=JavaScript src="Java深入了解String对象.files/stat.htm" 
+charset=gb2312></SCRIPT>
+ </DIV>
+<SCRIPT type=text/javascript>
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fa137c57e3649cc7e5f555285623afcc6' type='text/javascript'%3E%3C/script%3E"));
+</SCRIPT>
+
+<P></P></DIV></BODY></HTML>

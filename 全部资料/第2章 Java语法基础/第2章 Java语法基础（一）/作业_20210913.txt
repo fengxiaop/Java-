@@ -1,0 +1,14 @@
+一、字符串
+1、结合PPT中“String 类方法”的理论知识prjNoTwo/one/StringBufferDemo.java
+
+二、输入语句
+1、
+结合PPT中“Scanner输入”的理论知识，和程序prjNoTwo/one/TestScannerForFile.java
+自主学习如何使用Scanner从文件读取数据。
+
+
+2、
+结合PPT中“Scanner输入”的理论知识（包括PPT的备注部分），以及程序prjNoTwo/one/NextAndNextLine.java
+自主深入学习Scanner的next()和nextLine()方法在使用中的常见问题和解决办法。
+
+

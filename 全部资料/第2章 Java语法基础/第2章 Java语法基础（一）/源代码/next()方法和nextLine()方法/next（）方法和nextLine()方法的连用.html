@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)https://www.cnblogs.com/chiweiming/p/9477567.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <meta property="og:description" content="原创 Java中Scanner类中的方法next()和nextLine()都是吸取输入台输入的字符，区别： next()不会吸取字符前/后的空格/Tab键，只吸取字符，开始吸取字符（字符前后不算）直到">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Java中方法next()和nextLine()的区别 - 剑冢、 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.ico?v=20200522" type="image/x-icon">
+    
+    <link rel="stylesheet" href="./next（）方法和nextLine()方法的连用_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./next（）方法和nextLine()方法的连用_files/bundle-book-2.min.css">
+    <link type="text/css" rel="stylesheet" href="./next（）方法和nextLine()方法的连用_files/custom.css">
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./next（）方法和nextLine()方法的连用_files/bundle-book-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/chiweiming/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/chiweiming/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/chiweiming/wlwmanifest.xml">
+    <script async="" src="./next（）方法和nextLine()方法的连用_files/analytics.js"></script><script type="text/javascript" src="./next（）方法和nextLine()方法的连用_files/encoder.js"></script><script>
+        var currentBlogId = 419801;
+        var currentBlogApp = 'chiweiming';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'BOOK';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2018-08-14 08:25';
+        </script>
+    <script src="./next（）方法和nextLine()方法的连用_files/jquery-2.2.0.min.js"></script>
+    <script src="./next（）方法和nextLine()方法的连用_files/blog-common.min.js"></script>
+    
+    
+    
+<style type="text/css">
+[id^="ad_"] {display:none!important;display:none}</style>
+</head>
+<body>
+    <a name="top"></a>
+    
+    <script type="text/javascript">
+	try {
+		if (screen.availWidth > 1200) {
+			document.getElementById("MainCss").href = '/skins/book/bundle-book-2.min.css';
+		}
+	} catch (e) { }
+</script>
+
+<div id="header">
+<div id="HeaderTitle">
+<div id="Title">
+<a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/chiweiming/">豪杰冢化尘烟</a>
+
+</div>
+<div id="subTitle">
+不积跬步无以至千里。
+</div>
+</div>
+</div>
+
+
+<div id="main">
+	<div id="post_detail">
+    <div class="post">
+        <h2>
+            
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/chiweiming/p/9477567.html">
+    <span>Java中方法next()和nextLine()的区别</span>
+    
+
+
+</a>
+
+        </h2>
+        
+<div id="cnblogs_post_body" class="blogpost-body">
+    <p><span style="background-color: #ffff99; font-size: 18pt;"><strong>原创</strong></span></p>
+<hr>
+<p><span style="font-size: 13px; color: #0000ff; font-family: 楷体;"><strong>　　Java中Scanner类中的方法next()和nextLine()都是吸取输入台输入的字符，区别：</strong></span></p>
+<ul>
+<li><span style="font-size: 13px; color: #0000ff; font-family: 楷体;"><strong>　next()不会吸取字符前/后的空格/Tab键，只吸取字符，开始吸取字符（字符前后不算）直到遇到空格/Tab键/回车截止吸取；</strong></span></li>
+<li><span style="font-size: 13px; color: #0000ff; font-family: 楷体;"><strong>　nextLine()吸取字符前后的空格/Tab键，回车键截止。</strong></span></li>
+</ul>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./next（）方法和nextLine()方法的连用_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> java.util.Scanner;
+</span><span style="color: #008080;"> 2</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> java.util.Vector;
+</span><span style="color: #008080;"> 3</span>  
+<span style="color: #008080;"> 4</span> <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> Main{
+</span><span style="color: #008080;"> 5</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> main(String args[]) {
+</span><span style="color: #008080;"> 6</span>         Scanner reader=<span style="color: #0000ff;">new</span><span style="color: #000000;"> Scanner(System.in);
+</span><span style="color: #008080;"> 7</span>         String s1=<span style="color: #000000;">reader.nextLine();
+</span><span style="color: #008080;"> 8</span>         String s2=<span style="color: #000000;">reader.next();
+</span><span style="color: #008080;"> 9</span> <span style="color: #000000;">        System.out.println(s1);
+</span><span style="color: #008080;">10</span> <span style="color: #000000;">        System.out.println(s2);
+</span><span style="color: #008080;">11</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">12</span> }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./next（）方法和nextLine()方法的连用_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>运行样例：</p>
+<p><img src="./next（）方法和nextLine()方法的连用_files/1354470-20180814201619687-1129224770.png" alt=""></p>
+<p><span style="color: #0000ff;"><strong><span style="font-size: 13px; font-family: 楷体;">可以看到next()只吸取了askldfj字符，空格后面的都舍弃了!</span></strong></span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./next（）方法和nextLine()方法的连用_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> java.util.Scanner;
+</span><span style="color: #008080;"> 2</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> java.util.Vector;
+</span><span style="color: #008080;"> 3</span>  
+<span style="color: #008080;"> 4</span> <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> Main{
+</span><span style="color: #008080;"> 5</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> main(String args[]) {
+</span><span style="color: #008080;"> 6</span>         Scanner reader=<span style="color: #0000ff;">new</span><span style="color: #000000;"> Scanner(System.in);
+</span><span style="color: #008080;"> 7</span>         String s1=<span style="color: #000000;">reader.next();
+</span><span style="color: #008080;"> 8</span>     <span style="color: #008000;">//</span><span style="color: #008000;">    String ss=reader.nextLine();</span>
+<span style="color: #008080;"> 9</span>         String s2=<span style="color: #000000;">reader.nextLine();
+</span><span style="color: #008080;">10</span> <span style="color: #000000;">        System.out.println(s1);
+</span><span style="color: #008080;">11</span> <span style="color: #000000;">        System.out.println(s2);
+</span><span style="color: #008080;">12</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">13</span> }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./next（）方法和nextLine()方法的连用_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="color: #0000ff;"><strong><span style="font-size: 13px; font-family: 楷体;">将next()和nextLine()换个顺序</span></strong></span></p>
+<p>运行样例：</p>
+<p><img src="./next（）方法和nextLine()方法的连用_files/1354470-20180814202241862-750401408.png" alt=""></p>
+<p><span style="color: #0000ff;"><strong><span style="font-size: 13px; font-family: 楷体;">只输入了aaaa bbbb cccc，系统自动输出了两行：</span></strong></span></p>
+<p><span style="color: #0000ff;"><strong><span style="font-size: 13px; font-family: 楷体;">aaaa</span></strong></span></p>
+<p><span style="color: #0000ff;"><strong><span style="font-size: 13px; font-family: 楷体;">&nbsp;bbbb cccc</span></strong></span></p>
+<p><span style="color: #0000ff;"><strong><span style="font-size: 13px; font-family: 楷体;">因为aaaa后面有个空格，next是不需要的，所以next读取结束，剩菜剩饭 bbbb cccc被nextLine捡了</span></strong></span></p>
+<p><span style="color: #0000ff;"><strong><span style="font-size: 13px; font-family: 楷体;">解决方法是加上上面代码注意的 nextLine()</span></strong></span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./next（）方法和nextLine()方法的连用_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">import</span><span style="color: #000000;"> java.util.Scanner;
+
+</span><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> Main {
+    
+    </span><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> main(String[] args) {
+        Scanner reader</span>=<span style="color: #0000ff;">new</span><span style="color: #000000;"> Scanner(System.in);
+        String s1</span>=<span style="color: #000000;">reader.next();
+        String s2</span>=<span style="color: #000000;">reader.nextLine();
+        System.out.println(s1);
+        System.out.println(s2);
+    }
+}</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./next（）方法和nextLine()方法的连用_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<div class="cnblogs_code">
+<pre><span style="color: #000000;">abcdefg
+abcdefg<br>　　　　　　//剩下两行<br><br></span></pre>
+</div>
+<p>　　输入abcdefg后回车程序已经结束了，然后输出了abcdefg和两行换行，原因是因为nextLine吸收了next后的回车。所以要十分注意的是，两个nextLine尽量不要连在一起。而使用next不会出现这种情况，因为next吸取的第一个要求的是字符，最后一个要求是空格、Tab键、回车键。</p>
+<p>&nbsp;</p>
+<p><span style="font-size: 13px;"><strong>20:25:47</strong></span></p>
+<p><span style="font-size: 13px;"><strong>2018-08-14</strong></span></p>
+</div>
+<div id="MySignature" style="display: block;"><div>作者：<a href="http://www.cnblogs.com/chiweiming/" target="_blank">剑冢、</a></div>
+<div>出处：<a href="http://www.cnblogs.com/chiweiming/" target="_blank">http://www.cnblogs.com/chiweiming/</a></div>
+<div>本文为原创博客，转载请声明出处地址。 </div></div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/chiweiming/category/1205215.html" target="_blank">ESSAY</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(9477567,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;edd7d6c8-e58a-4c99-9f1c-08d5866282ce&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./next（）方法和nextLine()方法的连用_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./next（）方法和nextLine()方法的连用_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/chiweiming/" target="_blank"><img src="./next（）方法和nextLine()方法的连用_files/20180317222427.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/chiweiming/">剑冢、</a><br>
+            <a href="https://home.cnblogs.com/u/chiweiming/followees/">关注 - 2</a><br>
+            <a href="https://home.cnblogs.com/u/chiweiming/followers/">粉丝 - 47</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;edd7d6c8-e58a-4c99-9f1c-08d5866282ce&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(9477567,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">3</span>
+    </div>
+    <div class="buryit" onclick="votePost(9477567,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/chiweiming/p/9474394.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/chiweiming/p/9474394.html" title="发布于 2018-08-14 14:35">发现环</a>
+    <br>
+    <a href="https://www.cnblogs.com/chiweiming/p/9476814.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/chiweiming/p/9476814.html" title="发布于 2018-08-14 20:29">A + B Problem</a>
+
+</div>
+</div>
+        <p class="postfoot">
+            posted on 
+<span id="post-date">2018-08-14 20:25</span>&nbsp;
+<a href="https://www.cnblogs.com/chiweiming/">剑冢、</a>&nbsp;
+阅读(<span id="post_view_count">24405</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=9477567" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(9477567);return false;">收藏</a>
+        </p>
+    </div>
+</div>
+
+
+<script src="./next（）方法和nextLine()方法的连用_files/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 419801, cb_blogApp = 'chiweiming', cb_blogUserGuid = 'edd7d6c8-e58a-4c99-9f1c-08d5866282ce';
+    var cb_entryId = 9477567, cb_entryCreatedDate = '2018-08-14 20:25', cb_postType = 1;
+    loadViewCount(cb_entryId);
+</script><a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<script>
+    var commentManager = new blogCommentManager();
+    commentManager.renderComments(0);
+</script>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/chiweiming/p/9477567.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/chiweiming/p/9477567.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    注册用户登录后才能发表评论，请 
+    <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a>
+     或 
+    <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，
+    <a href="https://www.cnblogs.com/">访问</a> 网站首页。
+</div></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-ucancode&#39;)">【推荐】超50万行VC++源码: 大型组态工控、电力仿真CAD与GIS源码库</a><br><a href="https://developer.aliyun.com/topic/offer/yunqi?utm_content=g_1000180856" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-阿里云offer5k&#39;)">【推荐】阿里云携近百家科技企业向你发来面试邀请</a><br><a href="https://brands.cnblogs.com/agora" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-声网专区&#39;)">【推荐】未知数的距离，毫秒间的传递，声网与你实时互动</a><br><a href="https://developer.aliyun.com/learning/trainingcamp/holo/1?utm_content=g_1000179015" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-阿里云Holo训练营&#39;)">【推荐】5天实战！技术大咖带你玩转实时数仓，赢定制T恤</a><br><a href="https://brands.cnblogs.com/huawei" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-华为专区&#39;)">【推荐】了不起的开发者，挡不住的华为，园子里的品牌专区</a><br><a href="https://developer.aliyun.com/ask/257928?utm_content=g_1000088948" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-阿里云开发者社区&#39;)">【推荐】精品问答：精品问答：Python 技术 1000 问</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;"></div>
+    </div>
+    <div id="under_post_news"><div class="recomm-block"><b>相关博文：</b><br>·  <a title="java中nextLine()和next()的区别" href="https://www.cnblogs.com/NeverCtrl-C/p/6105401.html" target="_blank" onclick="clickRecomItmem(6105401)">java中nextLine()和next()的区别</a><br>·  <a title="java中nextLine()和next()的区别" href="https://www.cnblogs.com/fazero/p/4870270.html" target="_blank" onclick="clickRecomItmem(4870270)">java中nextLine()和next()的区别</a><br>·  <a title="Scanner中next（）和nextline（）读取字符串方法和区别" href="https://www.cnblogs.com/astro8116/p/4389739.html" target="_blank" onclick="clickRecomItmem(4389739)">Scanner中next（）和nextline（）读取字符串方法和区别</a><br>·  <a title="Java基础之Scanner类中next()与nextLine()方法的区别" href="https://www.cnblogs.com/ihaveastory/p/5931278.html" target="_blank" onclick="clickRecomItmem(5931278)">Java基础之Scanner类中next()与nextLine()方法的区别</a><br>·  <a title="Java中关于nextInt()、next()和nextLine()的理解" href="https://www.cnblogs.com/Skyar/p/5892825.html" target="_blank" onclick="clickRecomItmem(5892825)">Java中关于nextInt()、next()和nextLine()的理解</a><br>»  <a target="_blank" href="https://recomm.cnblogs.com/blogpost/9477567">更多推荐...</a><div id="cnblogs_t5"><a href="https://www.sheca.com/assets/wwx/page3.html?site=bokeyuan" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T5-上海CA-大家签&#39;)">【推荐】电子签名认准大家签，上海CA权威认证</a></div></div></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id="div-gpt-ad-1592366332455-0" style="width: 468px; height: 60px;"></div>
+    </div>
+    <div id="under_post_kb">
+<div class="itnews c_ad_block">
+    <b>最新 IT 新闻</b>:
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/672833/" target="_blank">我，活在中关村的夜里</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/672832/" target="_blank">理想的投资，就是用投资实现了理想</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/672831/" target="_blank">从金融到企业服务，京东数科值不值2000亿元？</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/672830/" target="_blank">京东向左，天猫向右，有人向下</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/672829/" target="_blank">B站想破圈 UP主想恰饭</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+        fixPostBody();
+        deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+        loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	<p id="footer">
+	Powered by: 
+	<br>
+	
+	<a href="https://www.cnblogs.com/" id="footer_site_link">博客园</a>
+	<br>
+	Copyright © 2020 剑冢、
+<br><span id="poweredby">Powered by .NET Core on Kubernetes</span>
+
+</p>
+
+
+</div>
+<div id="rightmenu">
+	
+		<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2020/08/14&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2020年9月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2020/10/14&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="" align="center">
+                            3
+                        </td>
+                        <td class="" align="center">
+                            4
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        5
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            6
+                        </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                            <td class="" align="center">
+                                11
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            13
+                        </td>
+                            <td class="CalTodayDay" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                            <td class="" align="center">
+                                18
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            20
+                        </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            27
+                        </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            3
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            4
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                8
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                9
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            10
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>
+		
+<h3>导航</h3>
+<ul>
+			<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+			<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/chiweiming/">
+首页</a>
+</li>
+			<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+			<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E5%89%91%E5%86%A2%E3%80%81">
+联系</a></li>
+			<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/chiweiming/rss/">
+订阅</a>
+<a id="blog_nav_rss_image" href="https://www.cnblogs.com/chiweiming/rss/">
+    <img src="./next（）方法和nextLine()方法的连用_files/xml.gif" alt="订阅">
+</a></li>
+			<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		
+<h3>统计</h3>
+<ul>
+    <li>随笔 - 
+222</li>
+    <li>文章 - 
+1</li>
+    <li>评论 - 
+36</li>
+    <li>
+        引用 - 
+0
+    </li>
+</ul>
+
+
+		
+<div id="sidebar_news" class="newsItem">
+<h3>公告</h3>
+
+<div id="blog-news">
+    <div style="font-family: 华文楷体; color: rgba(255, 215, 0, 1); font-size: 14px">蓦然回首，那人却在灯火阑珊处。</div>
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/chiweiming/">
+            剑冢、
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/chiweiming/" title="入园时间：2018-03-17">
+            2年5个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/chiweiming/followers/">
+            47
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/chiweiming/followees/">
+            2
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow(&#39;edd7d6c8-e58a-4c99-9f1c-08d5866282ce&#39;)">+加关注</a></div>
+        <script>getFollowStatus('edd7d6c8-e58a-4c99-9f1c-08d5866282ce');</script>
+    </div>
+</div>
+
+</div>
+
+<div id="sidebar_ad"></div>
+		<div id="blog-sidecolumn">
+<!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block">
+    
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    
+<li><a href="https://www.cnblogs.com/chiweiming/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/chiweiming/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/chiweiming/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/chiweiming/RecentComments.html" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/chiweiming/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block">
+    
+</div>
+
+<!-- 积分与排名 -->
+<div id="sidebar_scorerank" class="sidebar-block">
+    <h3>积分与排名</h3>
+<ul>
+    <li>
+        积分 - 
+120851
+    </li>
+    <li>
+        排名 - 
+6084
+    </li>
+</ul>
+</div>
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+    
+        <h3>
+            
+随笔分类
+
+
+
+        </h3>
+        <ul>
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1205215.html" rel="" target="">
+    ESSAY(8)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1278063.html" rel="" target="">
+    HDOJ(7)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1585785.html" rel="" target="">
+    JavaScript(1)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1356621.html" rel="" target="">
+    JavaWeb实习(1)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1482620.html" rel="" target="">
+    Java学习(31)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1487665.html" rel="" target="">
+    PHP(5)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1406892.html" rel="" target="">
+    POJ(2)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1213193.html" rel="" target="">
+    第八届蓝桥杯C语言B组（国赛）(4)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1229376.html" rel="" target="">
+    第八届蓝桥杯JavaB组（国赛）(3)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1350133.html" rel="" target="">
+    第八届蓝桥杯JavaB组（省赛）(7)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1228328.html" rel="" target="">
+    第九届蓝桥杯C语言B组（国赛）(2)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1195514.html" rel="" target="">
+    第九届蓝桥杯C语言B组（省赛）(8)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1404783.html" rel="" target="">
+    第九届蓝桥杯JavaB组（省赛）(8)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1230275.html" rel="" target="">
+    第六届蓝桥杯C语言B组（国赛）(3)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1213198.html" rel="" target="">
+    第六届蓝桥杯C语言B组（省赛）(2)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1352333.html" rel="" target="">
+    第六届蓝桥杯JavaB组（国赛）(1)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1425372.html" rel="" target="">
+    第六届蓝桥杯JavaB组（省赛）(6)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1213196.html" rel="" target="">
+    第七届蓝桥杯C语言B组（国赛）(2)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1228304.html" rel="" target="">
+    第七届蓝桥杯C语言B组（省赛）(2)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1417318.html" rel="" target="">
+    第七届蓝桥杯JavaB组（省赛）(7)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1431422.html" rel="" target="">
+    第十届蓝桥杯JavaB组（省赛）(8)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1181631.html" rel="" target="">
+    动态规划(10)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1249761.html" rel="" target="">
+    复习总结(6)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1443669.html" rel="" target="">
+    桂林电子科技大学第三届ACM程序设计竞赛(4)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1193288.html" rel="" target="">
+    进阶(89)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/category/1234305.html" rel="" target="">
+    蓝桥杯大赛官网试题集(6)
+</a>
+ 
+
+                    </li>
+                    
+        </ul>
+        <h3>
+            
+随笔档案
+
+
+
+        </h3>
+        <ul>
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2020/05.html" rel="" target="">
+    2020年5月(1)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2020/04.html" rel="" target="">
+    2020年4月(1)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2019/11.html" rel="" target="">
+    2019年11月(8)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2019/10.html" rel="" target="">
+    2019年10月(1)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2019/08.html" rel="" target="">
+    2019年8月(7)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2019/07.html" rel="" target="">
+    2019年7月(12)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2019/06.html" rel="" target="">
+    2019年6月(13)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2019/05.html" rel="" target="">
+    2019年5月(1)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2019/04.html" rel="" target="">
+    2019年4月(18)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2019/03.html" rel="" target="">
+    2019年3月(31)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2019/02.html" rel="" target="">
+    2019年2月(9)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2019/01.html" rel="" target="">
+    2019年1月(2)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2018/12.html" rel="" target="">
+    2018年12月(11)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2018/11.html" rel="" target="">
+    2018年11月(20)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2018/10.html" rel="" target="">
+    2018年10月(12)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2018/09.html" rel="" target="">
+    2018年9月(5)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2018/08.html" rel="" target="">
+    2018年8月(12)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2018/07.html" rel="" target="">
+    2018年7月(20)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2018/06.html" rel="" target="">
+    2018年6月(12)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2018/05.html" rel="" target="">
+    2018年5月(10)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2018/04.html" rel="" target="">
+    2018年4月(11)
+</a>
+ 
+
+                    </li>
+                    
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/archive/2018/03.html" rel="" target="">
+    2018年3月(5)
+</a>
+ 
+
+                    </li>
+                    
+        </ul>
+        <h3>
+            
+相册
+
+
+
+        </h3>
+        <ul>
+                    <li>
+                        
+<a href="https://www.cnblogs.com/chiweiming/gallery/1193289.html" rel="nofollow noopener noreferrer" target="">
+    版权图片(4)
+</a>
+ 
+
+                    </li>
+                    
+        </ul>
+
+</div>
+
+<!-- 最新评论 -->
+
+
+
+
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block">
+    
+<div id="topview_posts_wrap">
+    <h3 class="catListTitle">阅读排行榜</h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/chiweiming/p/9477567.html">
+                            1. Java中方法next()和nextLine()的区别(24405)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chiweiming/p/8932140.html">
+                            2. 关于求负数补码(20678)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chiweiming/p/9058438.html">
+                            3. 先进先出算法（FIFO）——页面置换(16130)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chiweiming/p/9738708.html">
+                            4. 综合学生信息管理系统(JSP+JDBC)(9242)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chiweiming/p/9028002.html">
+                            5. 最高优先级算法——进程调度(8027)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+</div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block">
+    
+<div id="topfeedback_posts_wrap">
+    <h3 class="catListTitle">评论排行榜</h3>
+    <div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/chiweiming/p/8819132.html">
+                            1. 递增三元数组——第九届蓝桥杯C语言B组（省赛）第六题(8)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chiweiming/p/8898188.html">
+                            2. 乘积尾零——第九届蓝桥杯C语言B组（省赛）第三题(8)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chiweiming/p/8776415.html">
+                            3. 螺旋折线——第九届蓝桥杯C语言B组（省赛）第七题(6)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chiweiming/p/9738708.html">
+                            4. 综合学生信息管理系统(JSP+JDBC)(4)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/chiweiming/p/9732377.html">
+                            5. JSP+JDBC实现在可视化页面中插入数据到SQL数据库(3)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+</div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+    
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">推荐排行榜</h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/chiweiming/p/9732377.html">
+                                1. JSP+JDBC实现在可视化页面中插入数据到SQL数据库(4)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/chiweiming/p/8596436.html">
+                                2. N阶台阶问题(详解)(3)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/chiweiming/p/8621374.html">
+                                3. 01背包(详解)(3)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/chiweiming/p/8898188.html">
+                                4. 乘积尾零——第九届蓝桥杯C语言B组（省赛）第三题(3)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/chiweiming/p/8932140.html">
+                                5. 关于求负数补码(3)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div></div>
+                    <script>loadBlogSideColumn();</script>
+	
+</div>
+			
+			
+			
+			
+			 
+
+	
+
+
+    
+
+
+</body></html>

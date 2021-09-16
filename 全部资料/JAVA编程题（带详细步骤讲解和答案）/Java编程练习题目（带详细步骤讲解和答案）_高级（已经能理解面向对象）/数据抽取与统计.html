@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<!-- saved from url=(0071)http://www.csgmooc.com/01712/teacher/practicalCenter/practicalPractical -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--<base href="http://www.csgmooc.com:80/01712/">--><base href=".">
+
+  	<title>学吧在线-实训步骤</title>
+     <meta name="renderer" content="webkit">
+	 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	 <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, user-scalable=no,initial-scale=1.0;">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<!--
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	-->
+		   <!-- Main Style Sheet -->
+		    <link rel="stylesheet" href="./数据抽取与统计_files/main.css">
+		    <link rel="stylesheet" href="./数据抽取与统计_files/reset.css">
+		    <link href="./数据抽取与统计_files/photoswipe.css" rel="stylesheet">
+		    <link href="./数据抽取与统计_files/default-skin.css" rel="stylesheet">
+		   
+		    <link rel="stylesheet" type="text/css" href="./数据抽取与统计_files/animate.css">
+  			<link rel="stylesheet" type="text/css" href="./数据抽取与统计_files/buttons.css">
+  			<style type="text/css">
+          	img {
+                max-width: 100%;
+              }
+    
+    		</style>
+		    <!-- Respond.js for IE 8 or less only -->
+		    <script>window.jQuery || document.write('<script src="commjs/jquery-1.9.1.min.js"><\/script>')</script><script src="./数据抽取与统计_files/jquery-1.9.1.min.js"></script>
+		    <script src="./数据抽取与统计_files/plugins.js"></script>
+		    <script src="./数据抽取与统计_files/photoswipe.min.js"></script>
+		    <script src="./数据抽取与统计_files/photoswipe-ui-default.min.js"></script>
+		    <script src="./数据抽取与统计_files/jquery.noty.packaged.min.js" type="text/javascript"></script>
+  			<script src="./数据抽取与统计_files/notify.js" type="text/javascript"></script>
+		    <script type="text/javascript" src="./数据抽取与统计_files/jquery.qrcode-0.12.0.min.js"></script>
+		    
+		  <script type="text/javascript">
+		  
+		  var body_wid = screen.width;
+		  
+		  function toBack(taskid){
+		  	var t_form = $("<form action='teacher/practicalCenter/videolearn' name='taskForm' method='post'>"+
+		     		 "<input type='hidden' name='taskid' value='"+taskid+"'/>" +
+		     		 "</form>");
+		  	$("body").append(t_form);
+		  	$("form[name='taskForm']").submit();   
+		  }
+		  
+		   function toexBack(experimentid){
+		  	var t_form = $("<form action='teacher/practicalCenter/videolearn' name='taskForm' method='post'>"+
+		  			 "<input type='hidden' name='taskid' value='0'/>" +
+		     		 "<input type='hidden' name='experimentid' value='"+experimentid+"' />" +
+		     		 "<input type='hidden' name='courseid' value="+''+" >" +
+		     		 "</form>");
+		  	$("body").append(t_form);
+		  	$("form[name='taskForm']").submit();   
+		  }
+		  
+		  //点击知识点和答案，页面跳转到其所在div事件
+			function onScoll(obj) {
+			    $("html,body").stop(true);
+			    $("html,body").animate({scrollTop: $(obj).offset().top}, 1000);
+			}
+		  
+		  $(function(){
+		  		
+				$("#warning").click(function(){
+					
+					mNotify.toast("warning","无可用虚机，请联系供应商获取虚机授权。");
+				
+				});
+	    	//为 场景任务 第一个<li>添加选中样式
+	    	
+	       //场景任务
+	    	$(".p-about-knowloge").click(function(){
+	    	   var vi=$(this).attr("vi");
+	            if($(this).find("i").hasClass("i-border-down")){
+	                $(this).find("i").removeClass("i-border-down").addClass("i-border-up");
+	            }else{
+	                $(this).find("i").removeClass("i-border-up").addClass("i-border-down");
+	               
+	    	    $("#startstudy"+vi+" a").remove();
+	    		var taskid=$(this).attr("taskid");
+	    		var experimentid=$(this).attr("experimentid");
+	    		if(typeof(taskid)!="undefined"){
+	    		 $("#knowledgelist"+vi+" li").remove();
+	    		var url="teacher/practicalCenter/loadChapter";
+	    		var args={"taskid":taskid};
+	    		$.getJSON(url,args,function(data){
+	    		
+	    		if(data.tklist.length>0){
+	    		$.each(data.tklist,function(i,k){
+	    			$("#knowledgelist"+vi).append("<li><a href='javascript:void(0)'>"+k.knowledge.name+"<span class='pull-right'>"+numberToTime(k.knowledge.videolen)+"</span></a></li>");
+	    			
+	    		   });
+	    		
+	    		$("#startstudy"+vi).append("<a class='p-look-answer-see p-buttn btn-blue' href='javascript:toBack("+taskid+")'  type='button'  style='border-radius: 5px;'>开始学习</a>");
+	    		}
+	    	});
+	    		}
+	    		   if(typeof(experimentid)!="undefined"){
+	    		 $("#eknowledgelist li").remove();
+	    		var url="teacher/practicalCenter/loadKnowledgeByExperiment";
+	    		var args={"experimentid":experimentid};
+	    		$.getJSON(url,args,function(data){
+	    		
+	    		if(data.eklist.length>0){
+	    		$.each(data.eklist,function(i,k){
+	    			$("#eknowledgelist").append("<li><a href='javascript:void(0)'>"+k.knowledge.name+"<span class='pull-right'>"+numberToTime(k.knowledge.videolen)+"</span></a></li>");
+	    			
+	    		   });
+	    		
+	    		$("#startstudy"+vi).append("<a class='p-look-answer-see p-buttn btn-blue' href='javascript:toexBack("+experimentid+")'  type='button'  style='border-radius: 5px;'>开始学习</a>");
+	    		}
+	    		});
+	    		}
+	    		
+	    		
+	    
+	            }
+	            $(this).next().find("i").removeClass("i-border-down").addClass("i-border-up");
+	            $("#practical-answer" + vi).css("display","none");
+	            $("#practical-knowledge" + vi).slideToggle(500);
+	            
+			 	onScoll("#practical-knowledge" + vi);//1.29添加
+	    	
+	     });
+	     //查看答案
+	         $(".p-look-answer-see").click(function(){
+
+	        var vi=$(this).attr("vi");
+
+	        if($(this).find("i").hasClass("i-border-down")){
+	            $(this).find("i").removeClass("i-border-down").addClass("i-border-up");
+	        }else{
+	            $(this).find("i").removeClass("i-border-up").addClass("i-border-down");
+	        }
+	        $(this).prev().find("i").removeClass("i-border-down").addClass("i-border-up");
+	        $("#practical-knowledge" + vi).css("display","none");
+	        $("#practical-answer" + vi).fadeToggle(500);
+	        
+	         onScoll("#practical-answer" + vi);//1.29添加
+	    }); 
+
+	        
+	     var numberToTime=function(number){
+	     var HOUR_MILLS = 60*60*1000;
+	     var MIN_MILLS = 60*1000;
+	     var SEN_MILLS = 1000;
+	   
+	         var total_time = number*1000;
+				
+				var show_hour = parseInt(total_time / HOUR_MILLS);
+			    var show_min = parseInt((total_time - (show_hour*HOUR_MILLS)) / MIN_MILLS);
+			    var show_sen = parseInt((total_time - (show_hour*HOUR_MILLS + show_min*MIN_MILLS)) / SEN_MILLS);
+				
+			    var time = pad(show_hour,2)+":"+pad(show_min,2)+":"+pad(show_sen,2);
+			   
+			    return time;
+	     }
+	 
+	   });
+    </script>
+    
+    <style type="text/css">
+    	.history {
+   	 		color: #fff !important;
+    		margin-right: 10px
+		}
+
+		.history_img {
+   			 margin-top: 13px;
+    		 margin-right: 5px;
+		}
+    </style>
+    
+  </head>
+  
+ <body class="homepage" data-spy="scroll" data-target=".navbar" style="overflow-y:scroll;">
+<!--[if lte IE 7]>
+<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to
+    improve your experience.</p>
+<![endif]-->
+  <header role="header" style="height: 48px; margin-right: 0; padding-right: 0;">
+      <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+        <div class="container" style=" color: #ffffff">
+            <div class="row">
+                <div class="col-md-8 nam">
+              		<div style="line-height: 50px">
+                	<!--以下链接由服务端确定返回地址，不同的转入对应不同的页面转出-->
+                	
+                    
+                    
+                    <a href="javascript:history.go(-1)" class="history" id="back">
+	                            <img src="./数据抽取与统计_files/back.png" class="history_img pull-left">
+	                           	 返回
+	                        </a>
+                    <b>SE_JAVA_EXP_E036</b>
+                      <!-- 适配二维码 -->
+                       <!--  <script type="text/javascript" src="js/jquery.qrcode-0.12.0.min.js"></script> -->
+					      <script>
+					    jQuery(function(){
+					    jQuery('#qrcode').qrcode({
+						width   : 100,
+						height  : 100,
+						text	: "http://www.csgmooc.com:80/01712/mob/practicalCenter/scan?experimentid=39"					});
+					});
+					</script>
+                    <!-- 结束 -->
+                   
+                    
+            	</div>
+                </div>
+                  <div class="col-md-2 pull-right ">
+                      <!-- <button class="p-buttn btn-blue resul" style="width: 135px; border-radius: 5px; box-shadow: none"><img src="img/p-submit-icon.png" style="margin-right: 10px;margin-top: -7px;">提交结果</button><span class="glyphicon glyphicon-th-list" style='color:#fff'></span> -->
+                      <span class="ioc_list" style="background:#fff;color:#fff;width:20px;height:20px;background:url(&quot;practical/img/ioc_list.png&quot;);margin-top:15px;cursor:pointer"></span>
+                  </div>
+            </div><!--/.row-->
+        </div><!--/.container -->
+      </nav>
+  </header>
+<!--/.header-->
+<input type="hidden" id="nums" value="0">
+<main role="main">
+    <div class="container">
+        <div class="practical">
+            <div class="row">
+                <div class="col-md-3 col-sm-3">
+                    <section class="practical-left">
+                        <div class="p-left-list-fixed">
+                            <!-- <div class="p-enter">
+                              	<a href="javascript:void(0)" id="warning"> <span class="icon fa fa-desktop" style="margin-right: 10px;"></span > 进入虚拟机( Q ) <span
+                                        class="icon fa fa-play " style="margin-left: 70px;"></span>
+                                </a>
+                                </div> -->
+                               <div class="p-left-list">
+                                
+                                <!--/.p-precondition-->
+                                
+                                
+                                 <div class="p-precondition" style="display: none">
+                                    <ul>
+                                        <li class="p-precondition-active" style="border-radius: 5px 5px 0 0;"><a href="http://www.csgmooc.com/01712/#"> <span>&nbsp;</span><i style="margin-right: 5px;">+</i>前置条件</a></li>
+                     
+                                    </ul>
+                                </div><!--/.p-precondition-->
+                                 <div class="p_progress">
+                                    <ul>
+                                        <li liflag="0" class="p_progress_active"><a href="javascript:void(0)"><span>&nbsp;</span>实验任务1</a></li>
+                                       
+                                        <li><a href="javascript:void(0)"><span>&nbsp;</span> 完成效果预览</a></li>
+                                    </ul>
+                                </div><!--/.p_progress-->
+                                
+                                
+                                
+                                <div class="p-mobile-development">
+                                    <a href="javascript:void(0)"> <span>&nbsp;</span><i></i>移动端开发步骤</a>
+                                </div>
+                            </div>
+                            <!--/.p-left-list-->
+                        </div>
+                        <!--p-left-list-fixed-->
+                    </section>
+                    <!--/.practical-left-->
+                </div>
+                
+                <div class="col-md-9" id="showtasks">
+                   
+                    <!--/.p-task01-->
+                    <!-- 场景任务 -->
+                    
+                    
+                    <!-- 实验案例 -->
+                    
+                      <section class="practical-right p-task" id="taskli0" style="display: block">
+                        <h3><!-- 1.25 update start-->
+                            <!--<span>&nbsp;</span>-->
+                            <span class="border">&nbsp;</span>
+                            <!-- 1.25 update end-->16版.数据抽取与统计</h3>
+							<!-- <p class="p_task_type"></p> -->
+                       <!--  <p><i>任务类型：按要求写代码</i></p> -->
+
+                        <div class="practical-right-cont">
+                           <p style="line-height: 1.5em;"><span style="color: rgb(0, 176, 240);"><strong><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"></span></strong></span></p><p style="margin-top: 10px; margin-bottom: 0px; white-space: normal; padding: 0px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 21px;"><strong style="color: rgb(0, 176, 240); line-height: 24px;">前置任务1. 实验素材：</strong></span></p><p style="margin-top: 10px; margin-bottom: 0px; white-space: normal; padding: 0px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 21px;"><span style="line-height: 24px;">&nbsp; &nbsp; 1</span><span style="line-height: 1.5em;">-1.&nbsp;<span style="line-height: 1.5em; color: rgb(255, 0, 0);">如果您正在使用《<span style="line-height: 1.5em;">CSG虚拟开发环境》，</span></span><span style="line-height: 1.5em; color: rgb(255, 0, 0);">请跳过该步骤</span>。</span></span></p><p style="margin-top: 10px; margin-bottom: 10px; white-space: normal; padding: 0px;"><span style="line-height: 1.5em; font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;">&nbsp; &nbsp; 1-2.&nbsp;<span style="line-height: 1.5em;">下载本场景相关的开发工程包：<span style="line-height: 1.5em; font-family: 微软雅黑, sans-serif;"><a href="http://pan.baidu.com/s/1hrIpW0k" target="_blank">点击下载</a></span></span></span></p><p style="margin-top: 10px; margin-bottom: 0px; white-space: normal; padding: 0px;"><span style="line-height: 1.5em; font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="line-height: 1.5em;"></span></span></p><p style="white-space: normal; line-height: 1.5em;"><strong><span style="font-size: 14px; font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; color: rgb(0, 176, 240);">前置任务2. 如何导入项目工程：</span></strong></p><p style="white-space: normal; line-height: 1.5em;"><span style="font-size: 14px; font-family: 微软雅黑, &#39;Microsoft YaHei&#39;;">&nbsp; &nbsp; 2-1. 打开Eclipse。</span></p><p style="white-space: normal; line-height: 1.5em;"><span style="font-size: 14px; font-family: 微软雅黑, &#39;Microsoft YaHei&#39;;">&nbsp; &nbsp; 2-2. 选择菜单：File - Import - Existing Projects Into Workspace，点击Next按钮。</span></p><p style="white-space: normal; line-height: 1.5em;"><span style="font-size: 14px; font-family: 微软雅黑, &#39;Microsoft YaHei&#39;;">&nbsp; &nbsp; 2-3. 在新窗口中，点击Browse按钮选择您想导入的Eclipse项目工程目录。</span></p><p style="white-space: normal; line-height: 1.5em;"><span style="font-size: 14px; font-family: 微软雅黑, &#39;Microsoft YaHei&#39;;">&nbsp; &nbsp; 2-4. 点击Finish完成项目导入。</span></p><p style="line-height: 1.5em;"><span style="color: rgb(0, 176, 240);"><strong><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;">1、实验要求</span></strong></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;">&nbsp; &nbsp; 本实验要求：以统计员工性别为业务背景，体验接口的特性。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-1. 业务说明：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-1.1. 本实验以统计员工性别为业务背景。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-1.2. 员工性别统计完成后，将在可视化窗体中呈现统计结果。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-1.3. 员工数据可来源于不同的文件：txt文本文件或Excel文件。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-1.4. 本实验要求，学生创建一个用于规范员工数据获取业务的接口。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-1.5. 本实验涉及的相关组件如下图：</span></p><p style="text-align: center;"><img src="./数据抽取与统计_files/1477637659488082606.png" title="1477637659488082606.png" alt="图片3.png" width="638" height="328"></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1）StatisticView：员工性别统计窗体</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>该窗体的主要作用是：将获取的员工性别统计结果，以饼状图的形式呈现。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 80);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp;</span>本窗体已经实现，学生需要完成的是：对获取的员工性别数据进行统计。</span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2）EmployeeDao：员工操作接口</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>该接口的主要作用是：规范不同的数据获取业务，并向员工性别统计窗体提供完整的员工数据。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(255, 0, 0);">学生需要完成对本接口的定义。</span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3）EmployeesFromExcelDao：员工数据读取类（来自于Excel文件）</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>该类的主要作用是：从Excel文件中读取员工数据。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 80);">本类已经实现，学生需要使其实现EmployeeDao接口和相关函数。</span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>4）EmployeesFromFileDao：员工数据读取类（来自于txt文本文件）</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>该类的主要作用是：从txt文本文件中读取员工数据。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 80);">本类已经实现，学生需要使其实现EmployeeDao接口和相关函数。</span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-2. 导入环境工程包：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-2.1. 按前置任务1和任务2的要求，加载实验36所需的开发环境包</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 1.5em;">。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-3. 创建员工数据读取统一接口：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-3.1. 作用：规范数据读取，并向界面提供访问员工数据的统一方法。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-3.2. 限制1：在cn.campsg.java.experiment.dao包中创建EmployeeDao接口。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-3.3. 限制2：在EmployeeDao接口中定义员工数据的读取方法，形式如下：</span></p><p style="text-align: center;"><img src="./数据抽取与统计_files/1477637618389057956.png" title="1477637618389057956.png" alt="图片2.png" width="666" height="58"></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-4. 使员工数据读取类实现EmployeeDao接口：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-4.1. 修改EmployeesFromExcelDao类，使之实现EmployeeDao接口。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-4.2. 将EmployeesFromExcelDao类中的readEmployees方法，重命名为</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>EmployeeDao接口中定义的getEmployees方法。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-4.3. 修改EmployeesFromFileDao类，使之实现EmployeeDao接口。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-4.4. 将EmployeesFromFileDao类中的getEmployeesFromFile方法，重命名</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>为EmployeeDao接口中定义的getEmployees方法。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-5. 界面获得员工数据并显示：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-5.1. 定位cn.campsg.java.experiment.StatisticView窗体类。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-5.2. StatisticView访问EmployeeDao接口方法，获得员工数据。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-5.3. 对获得的员工数据进行性别统计（统计男女人数）。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-5.4. 将性别统计结果设置到StatisticView的图表控件上。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-5.5. 界面呈现图表。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-6. 体验组件低耦合特性：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-6.1. 通过修改配置文件，实现数据文件读取类的切换，体验接口的解耦特性。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-6.2. 通过cn.campsg.java.experiment.util.BeanManager类的getDaoBean方法获取不同的数据文件读取类。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-6.3. 修改conf/bean.properties文件，实现数据文件读取类的切换。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1-6.4. 说明：不同的数据文件读取类将获得不同类型文件中的员工数据。</span></p><p style="line-height: 1.5em;"><span style="color: rgb(0, 176, 240);"><strong><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;">2、实现思路</span></strong></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-1. 导入环境工程包。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-2. 创建员工数据读取统一接口：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-2.1. 在cn.campsg.java.experiment.dao包中创建EmployeeDao接口。</span></p><p style="line-height: 1.5em; margin-bottom: 10px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-2.2. 在EmployeeDao接口中定义员工数据读取方法，形式如下：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"></span></p><table width="458" align="center"><tbody><tr class="firstRow"><td width="458" valign="top" style="padding: 0px 7px; border: 1px solid windowtext; background-color: rgb(238, 236, 225);"><p style="line-height: 1.75em;"><strong><span style="font-family: 微软雅黑;font-size: 14px">&nbsp; </span></strong><span style="color: rgb(0, 176, 240);"><strong><span style="font-family: 微软雅黑; font-size: 14px;">+</span></strong><strong><span style="font-family: 微软雅黑; font-size: 14px;">&nbsp;</span></strong><strong><span style="font-family: 微软雅黑; font-size: 14px;">提示</span></strong></span></p><p style="line-height: 1.75em;"><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">&nbsp;public</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;Employee[] getEmployees() </span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">throws</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;IOException;</span></p></td></tr></tbody></table><p style="line-height: 1.5em; margin-top: 10px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-3. 使员工数据读取类实现EmployeeDao接口</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-3.1. 修改EmployeesFromExcelDao类，使之实现EmployeeDao接口。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-3.2. 将readEmployee方法重命名为getEmployees，从而达到实现接口的目的。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(255, 0, 0);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp;</span>注意：方法体中的代码已经实现了从Excel文件中读取员工数据的功能。</span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-3.3. 修改EmployeesFromFileDao类，使之实现EmployeeDao接口。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-3.4. 将getEmployeesFromFile方法重命名为getEmployees，从而达到实现接口的目的。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(255, 0, 0);">注意：方法体中的代码已经实现了从Txt文件中读取员工数据的功能。</span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-4. 界面获得员工数据并显示：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-4.1. 定位：cn.campsg.java.experiment.StatisticView窗体类。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-4.2. 找到StatisticView类中的getEmployeeStatistic方法，该方法的作用是统计员工性别并返回。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-4.3. getEmployeeStatistic方法由窗体调用，返回类型含义如下：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1） int[]数组的返回类型用于描述男性员工与女性员工的数量。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2）数组的第0位用于表示男性员工的数量。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3）数组的第1位用于表示女性员工的数量。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-4.4. 创建EmployeesFromFileDao类的实例。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-4.5. 定义员工对象数组employees，获取getEmployees方法的返回结果。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-4.6. 定义int型的变量：man和woman，分别用于保存男性员工与女性员工的人数。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-4.7. 遍历employees数组，统计员工性别：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1）如果数组中员工对象的gender属性为：“男”，则man变量加1。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2）如果数组中员工对象的gender属性为：“女”，则woman变量加1。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-4.8. 返回性别统计结果：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1）构造一个大小为2的int型数组，存储性别统计结果。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2）将man和woman变量数据依次存放入数组中。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(255, 0, 0);">注意：man和woman在数组中的位置不能颠倒，否则视图显示结果将会相反！</span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3）返回统计结果。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-4.9. 如有感兴趣的同学，可以通过StatisticView类的initialize方法，了解图表如何显示员工性别统计数据。</span></p><p style="line-height: 1.5em;"><span style="color: rgb(0, 176, 240);"><strong><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;">3、验证与测试</span></strong></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3-1. 在工程中定位主类：MainClass。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3-2. 测试1. 显示Txt文本中的员工性别统计结果：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3-2.1. 右键点击MainClass类，依次选择：Run As-&gt;Java Application。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3-2.2. 运行程序，查看输出结果是否符合预期。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3-3. 测试2. 显示Excel文本中的员工性别统计结果：</span></p><p style="line-height: 1.5em; margin-bottom: 10px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3-3.1.在StatisticView类的getEmployeeStatistic方法中，将代码做如下修改：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"></span></p><table width="458" align="center"><tbody><tr class="firstRow"><td width="458" valign="top" style="padding: 0px 7px; border: 1px solid windowtext; background-color: rgb(238, 236, 225);"><p style="line-height: 1.75em;"><span style="color: rgb(0, 176, 240);"><strong><span style="font-family: 微软雅黑; font-size: 14px;">&nbsp; +</span></strong><strong><span style="font-family: 微软雅黑; font-size: 14px;">&nbsp;</span></strong><strong><span style="font-family: 微软雅黑; font-size: 14px;">提示</span></strong></span></p><p style="line-height: 1.75em;"><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">&nbsp;// <span style="font-family:宋体">从</span><span style="font-family:Consolas">Excel</span><span style="font-family:宋体">文件中获取员工数据</span></span></p><p style="line-height: 1.75em;"><span style="font-family: Consolas;font-size: 14px">&nbsp;EmployeeDao </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">dao</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= </span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">new</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;EmployeesFromExcelDao();</span></p><p style="line-height: 1.75em;"><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">&nbsp;// <span style="font-family:宋体">从</span></span><span style="text-decoration:underline;"><span style="font-family: Consolas;color: rgb(63, 127, 95);font-size: 14px">Txt</span></span><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">文件中获取员工数据</span></p><p style="line-height: 1.75em;"><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">&nbsp;//EmployeeDao </span><span style="text-decoration:underline;"><span style="font-family: Consolas;color: rgb(63, 127, 95);font-size: 14px">dao</span></span><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">&nbsp;= new EmployeesFromFileDao();</span></p></td></tr></tbody></table><p style="line-height: 1.5em; margin-top: 10px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3-3.2. 测试从Excel文件中获取员工数据的运行结果，并体验接口的一致性。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3-3.3. 右键点击MainClass类，依次选择：Run As-&gt;Java Application。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3-3.4. 运行程序，查看输出结果是否符合预期。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3-4. 测试3. 体验组件低耦合特性：</span></p><p style="line-height: 1.5em; margin-bottom: 10px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3-4.1. 在StatisticView类的getEmployeeStatistic方法中，将代码做如下修改：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"></span></p><table width="458" align="center"><tbody><tr class="firstRow"><td width="458" valign="top" style="padding: 0px 7px; border: 1px solid windowtext; background-color: rgb(238, 236, 225);"><p style="line-height: 1.75em;"><strong><span style="font-family: 微软雅黑;font-size: 14px">&nbsp; </span></strong><span style="color: rgb(0, 176, 240);"><strong><span style="font-family: 微软雅黑; font-size: 14px;">+</span></strong><strong><span style="font-family: 微软雅黑; font-size: 14px;">&nbsp;</span></strong><strong><span style="font-family: 微软雅黑; font-size: 14px;">提示</span></strong></span></p><p style="line-height: 1.75em;"><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">&nbsp;//<span style="font-family:宋体">实例化</span></span><span style="text-decoration:underline;"><span style="font-family: Consolas;color: rgb(63, 127, 95);font-size: 14px">dao</span></span><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">层对象</span></p><p style="line-height: 1.75em;"><span style="font-family: Consolas;font-size: 14px">&nbsp;EmployeeDao </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">dao</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= BeanManager.</span><em><span style="font-family: Consolas;font-size: 14px">getDaoBean</span></em><span style="font-family: Consolas;font-size: 14px">();</span></p><p style="line-height: 1.75em;"><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">&nbsp;// <span style="font-family:宋体">从</span><span style="font-family:Consolas">Excel</span><span style="font-family:宋体">文件中获取员工数据</span></span></p><p style="line-height: 1.75em;"><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">&nbsp;//EmployeeDao </span><span style="text-decoration:underline;"><span style="font-family: Consolas;color: rgb(63, 127, 95);font-size: 14px">dao</span></span><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">&nbsp;= new EmployeesFromExcelDao();</span></p><p style="line-height: 1.75em;"><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">&nbsp;// <span style="font-family:宋体">从</span></span><span style="text-decoration:underline;"><span style="font-family: Consolas;color: rgb(63, 127, 95);font-size: 14px">Txt</span></span><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">文件中获取员工数据</span></p><p style="line-height: 1.75em;"><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">&nbsp;//EmployeeDao </span><span style="text-decoration:underline;"><span style="font-family: Consolas;color: rgb(63, 127, 95);font-size: 14px">dao</span></span><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">&nbsp;= new EmployeesFromFileDao();</span></p></td></tr></tbody></table><p style="line-height: 1.5em; margin-top: 10px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3-4.2. 体验接口的解耦特性：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>1）修改工程目录下的conf/bean.properties文件。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2）依次修改为：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>EmployeesFromExcelDao和EmployeesFromFileDao</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(255, 0, 0);">注意：包名必须是完整路径：cn.campsg.java.experiment.dao.</span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14.3999996185303px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>3-4.3. 每次修改类名后，运行程序，查看输出结果是否符合预期。</span></p>
+                        </div>
+                        <!--/.practical-right-cont-->
+                        <div class="form-group practical-right-btn">
+                            <a class="p-about-knowloge" id="experimenknowledge" experimentid="39" href="javascript:void(0)" vi="0">相关知识点<i class="i-border-up"></i></a>
+                            
+                            
+                           <!-- 从电脑登录，显示答案 -->
+                         
+                          
+                          	<a class="p-look-answer-see p-buttn btn-blue" type="button" href="javascript:void(0)" vi="0">查看答案<i class="i-border-down"></i></a>
+                          
+                          
+                           
+                           
+					     
+                        </div>
+                        <!--/.practical-right-btn-->
+                    </section>
+       				  <div class="practical-right-toggle-knowlage" id="practical-knowledge0" style="display: none;">
+                        <h3><span>&nbsp;</span>任务知识点</h3>
+                        <ul id="eknowledgelist">
+                          
+                           
+                        </ul>
+                        <div class="practical-right-btn" id="startstudy0">
+                       
+                        </div>
+                        <!--/.practical-right-btn-->
+                    </div>
+                    <!--/.practical-right-toggle-knowlage-->
+                    <div unselectable="on" style="user-select: none; display: block;" onselectstart="return false;" class="practical-right-toggle-answer" id="practical-answer0">
+                        <h3><!-- 1.25 update start-->
+                            <!--<span>&nbsp;</span>-->
+                            <span class="border">&nbsp;</span>
+                            <!-- 1.25 update end-->
+                            	任务答案</h3>
+
+                        <div class="practical-right-answer-cont">
+                            <p>
+                                  </p><p style="margin-bottom: 10px;"><span style=";font-family:微软雅黑;font-size:14px">1.</span><span style=";font-family:微软雅黑;font-size:14px">&nbsp;</span><span style=";font-family:微软雅黑;font-size:14px"><span style="font-family:微软雅黑">代码清单</span></span><span style=";font-family:微软雅黑;font-size:14px"><span style="font-family:微软雅黑">：</span></span><span style="font-family: 微软雅黑;font-size: 14px">cn.campsg.java.experiment.</span><span style="font-family: 微软雅黑;font-size: 14px">dao.</span><span style="font-family: 微软雅黑;font-size: 14px">EmployeeDao</span><span style=";font-family:微软雅黑;font-size:14px">.java</span></p><table width="560"><tbody><tr class="firstRow"><td width="560" valign="top" style="padding: 0px 7px; border: 1px solid windowtext;"><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">public</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">interface</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;EmployeeDao {</span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">&nbsp; &nbsp; public</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;Employee[] getEmployees() </span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">throws</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;IOException;</span></p><p><span style="font-family: Consolas;font-size: 14px">}</span></p></td></tr></tbody></table><p><span style=";font-family:微软雅黑;font-size:14px"><br></span></p><p style="margin-bottom: 10px;"><span style=";font-family:微软雅黑;font-size:14px">2.</span><span style=";font-family:微软雅黑;font-size:14px">&nbsp;</span><span style=";font-family:微软雅黑;font-size:14px"><span style="font-family:微软雅黑">代码清单</span></span><span style=";font-family:微软雅黑;font-size:14px"><span style="font-family:微软雅黑">：</span></span><span style="font-family: 微软雅黑;font-size: 14px">cn.campsg.java.experiment.dao</span><span style="font-family: 微软雅黑;font-size: 14px">.</span><span style="font-family: 微软雅黑;font-size: 14px">EmployeesFromExcelDao</span><span style=";font-family:微软雅黑;font-size:14px">.java</span></p><table width="560"><tbody><tr class="firstRow"><td width="560" valign="top" style="padding: 0px 7px; border: 1px solid windowtext;"><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">public</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">class</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;EmployeesFromExcelDao </span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px;background: rgb(255, 255, 0)">implements</span></strong><span style="font-family: Consolas;font-size: 14px;background: rgb(255, 255, 0)">&nbsp;EmployeeDao{</span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>public</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;EmployeesFromExcelDao() {}</span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>/**</span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px">&nbsp;<strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>* <span style="font-family:宋体">从</span><span style="font-family:Consolas">excel</span><span style="font-family:宋体">中读取所有的员工信息</span></span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>&nbsp;* </span><strong><span style="font-family: Consolas;color: rgb(127, 159, 191);font-size: 14px">@return</span></strong><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px">&nbsp;返回所有员工组成的对象数组</span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>&nbsp;* </span><strong><span style="font-family: Consolas;color: rgb(127, 159, 191);font-size: 14px">@throws</span></strong><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px">&nbsp;IOException</span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>&nbsp;*/</span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>public</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><span style="font-family: Consolas;font-size: 14px;background: rgb(255, 255, 0)">Employee[] getEmployees()</span><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">throws</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;IOException {</span></p><p style="text-indent: 77px"><span style="font-family: Consolas;font-size: 14px">……</span></p><p><span style="font-family: Consolas;font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>}</span></p><p><span style="font-family: Consolas;font-size: 14px">}</span></p></td></tr></tbody></table><p><span style=";font-family:微软雅黑;font-size:14px"><br></span></p><p style="margin-bottom: 10px;"><span style=";font-family:微软雅黑;font-size:14px">3. 代码清单</span><span style=";font-family:微软雅黑;font-size:14px"><span style="font-family:微软雅黑">：</span>cn.campsg.java.experiment</span><span style=";font-family:微软雅黑;font-size:14px">.</span><span style=";font-family:微软雅黑;font-size:14px">EmployeesFromFileDao</span><span style=";font-family:微软雅黑;font-size:14px">.java</span></p><table width="568"><tbody><tr class="firstRow"><td width="568" valign="top" style="padding: 0px 7px; border: 1px solid windowtext;"><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">public</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">class</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;EmployeesFromFileDao </span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px;background: rgb(255, 255, 0)">implements</span></strong><span style="font-family: Consolas;font-size: 14px;background: rgb(255, 255, 0)">&nbsp;EmployeeDao{</span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>public</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;EmployeesFromFileDao() {}</span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>/**</span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px">&nbsp;<strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>* <span style="font-family:宋体">从文本文档中读取所有的员工信息</span></span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>&nbsp;* </span><strong><span style="font-family: Consolas;color: rgb(127, 159, 191);font-size: 14px">@return</span></strong><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px">&nbsp;返回所有员工组成的对象数组</span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>&nbsp;* </span><strong><span style="font-family: Consolas;color: rgb(127, 159, 191);font-size: 14px">@throws</span></strong><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px">&nbsp;IOException</span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px">&nbsp;<strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>*/</span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>public</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><span style="font-family: Consolas;font-size: 14px;background: rgb(255, 255, 0)">Employee[] getEmployees()</span><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">throws</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;IOException {</span></p><p style="text-indent: 70px"><span style="font-family: Consolas;font-size: 14px">……</span></p><p><span style="font-family: Consolas;font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>}</span></p><p><span style="font-family: Consolas;font-size: 14px">}</span></p></td></tr></tbody></table><p><span style=";font-family:微软雅黑;font-size:14px"><br></span></p><p style="margin-bottom: 10px;"><span style=";font-family:微软雅黑;font-size:14px">4. 代码清单</span><span style=";font-family:微软雅黑;font-size:14px"><span style="font-family:微软雅黑">：</span>cn.campsg.java.experiment.StatisticView</span><span style=";font-family:微软雅黑;font-size:14px">.java</span></p><table><tbody><tr class="firstRow"><td valign="top" style="padding: 0px 7px; border: 1px solid windowtext; word-break: break-all;"><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">public</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">class</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;StatisticView {</span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>/**</span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>&nbsp;* <span style="font-family:宋体">获得员工性别的统计结果</span><span style="font-family:Consolas">(</span><span style="font-family:宋体">需要学生体验接口的特性）</span></span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>&nbsp;* </span><strong><span style="font-family: Consolas;color: rgb(127, 159, 191);font-size: 14px">@return</span></strong><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px">&nbsp;返回男，女员工的统计结果</span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>&nbsp;* </span><strong><span style="font-family: Consolas;color: rgb(127, 159, 191);font-size: 14px">@throws</span></strong><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px">&nbsp;IOException <span style="font-family:宋体">文件读取失败</span></span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px">&nbsp;<strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>*/</span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>public</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">int</span></strong><span style="font-family: Consolas;font-size: 14px">[] getEmployeeStatistic() </span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">throws</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;IOException {</span></p><p><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>//<span style="font-family:宋体">使用</span><span style="font-family:Consolas">BeanManager</span><span style="font-family:宋体">的</span><span style="font-family:Consolas">getDaoBean()</span><span style="font-family:宋体">方法创建</span><span style="font-family:Consolas">Employee</span><span style="font-family:宋体">接口的一个实例，名为：</span></span><span style="text-decoration:underline;"><span style="font-family: Consolas;color: rgb(63, 127, 95);font-size: 14px">dao</span></span><span style="font-family:Consolas;color:rgb(63,127,95);font-size:14px">。</span></p><p><span style="font-family: Consolas;font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>EmployeeDao </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">dao</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= BeanManager.</span><em><span style="font-family: Consolas;font-size: 14px">getDaoBean</span></em><span style="font-family: Consolas;font-size: 14px">();</span></p><p><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>//<span style="font-family:宋体">调用</span></span><span style="text-decoration:underline;"><span style="font-family: Consolas;color: rgb(63, 127, 95);font-size: 14px">dao</span></span><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">的<span style="font-family:Consolas">getEmployees()</span><span style="font-family:宋体">方法获得所有员工的数据</span></span></p><p><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>//<span style="font-family:宋体">将返回的结果存入名为</span><span style="font-family:Consolas">employees</span><span style="font-family:宋体">的对象数组中。</span></span></p><p><span style="font-family: Consolas;font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>Employee[] </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">employees</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">dao</span><span style="font-family: Consolas;font-size: 14px">.getEmployees();</span></p><p><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>//<span style="font-family:宋体">定义</span></span><span style="text-decoration:underline;"><span style="font-family: Consolas;color: rgb(63, 127, 95);font-size: 14px">int</span></span><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">型的变量<span style="font-family:Consolas">man,woman</span><span style="font-family:宋体">分别用于保存男女总人数。</span></span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>int</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">man</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= 0, </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">woman</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= 0;</span></p><p><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>//<span style="font-family:宋体">遍历</span><span style="font-family:Consolas">employees</span><span style="font-family:宋体">数组</span></span></p><p><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>//<span style="font-family:宋体">如果数组中当前位置的员工是女生，</span><span style="font-family:Consolas">woman</span><span style="font-family:宋体">变量加一，否则</span><span style="font-family:Consolas">man</span><span style="font-family:宋体">变量加一。</span></span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>for</span></strong><span style="font-family: Consolas;font-size: 14px">(Employee </span><span style="font-family:Consolas;color:rgb(106,62,62);font-size:14px">e</span><span style="font-family: Consolas;font-size: 14px">&nbsp;: </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">employees</span><span style="font-family: Consolas;font-size: 14px">) {</span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>if</span></strong><span style="font-family: Consolas;font-size: 14px">(</span><span style=";font-family:Consolas;color:rgb(42,0,255);font-size:14px">"<span style="font-family:宋体">女</span><span style="font-family:Consolas">"</span></span><span style="font-family: Consolas;font-size: 14px">.equals(</span><span style="font-family:Consolas;color:rgb(106,62,62);font-size:14px">e</span><span style="font-family: Consolas;font-size: 14px">.getGender())) {</span></p><p><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>woman</span><span style="font-family: Consolas;font-size: 14px">++;</span></p><p><span style="font-family: Consolas;font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>} </span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">else</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;{</span></p><p><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>man</span><span style="font-family: Consolas;font-size: 14px">++;</span></p><p><span style="font-family: Consolas;font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>}</span></p><p><span style="font-family: Consolas;font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>}</span></p><p><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>//<span style="font-family:宋体">构造一个大小为</span><span style="font-family:Consolas">2</span><span style="font-family:宋体">的</span></span><span style="text-decoration:underline;"><span style="font-family: Consolas;color: rgb(63, 127, 95);font-size: 14px">int</span></span><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">型数组<span style="font-family:Consolas">,</span><span style="font-family:宋体">名为</span><span style="font-family:Consolas">statistic</span><span style="font-family:宋体">。</span></span></p><p><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>//man<span style="font-family:宋体">，</span><span style="font-family:Consolas">woman</span><span style="font-family:宋体">在数组中的位置不能颠倒，否则视图显示的结果会相反！</span></span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>int</span></strong><span style="font-family: Consolas;font-size: 14px">[] </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">statistic</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= </span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">new</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">int</span></strong><span style="font-family: Consolas;font-size: 14px">[]{</span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">man</span><span style="font-family: Consolas;font-size: 14px">, </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">woman</span><span style="font-family: Consolas;font-size: 14px">};</span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>return</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">statistic</span><span style="font-family: Consolas;font-size: 14px">;</span></p><p><span style="font-family: Consolas;font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>}</span></p><p><span style="font-family: Consolas;font-size: 14px">}</span></p></td></tr></tbody></table>
+                            <p></p>
+                        </div>
+
+                    </div>
+                    
+                    <!--/.p-task04-->
+                    <section class="practical-right p-task" id="preImage">
+                        <h3><!-- 1.25 update start-->
+                            <!--<span>&nbsp;</span>-->
+                            <span class="border">&nbsp;</span>
+                            <!-- 1.25 update end-->完成效果预览</h3>
+                        <div class="practical-right-preview">
+                 
+					<img src="./数据抽取与统计_files/u_1477636196623.png" style=" cursor: url(practical/img/search.ico), auto" class="img-responsive">
+				
+				
+                        </div>
+                    </section>
+                    <!--/.p-task05-->
+                    <section class="practical-right p-task" id="mobile-development">
+                        <h3><!-- 1.25 update start-->
+                            <!--<span>&nbsp;</span>-->
+                            <span class="border">&nbsp;</span>
+                            <!-- 1.25 update end-->移动端开发步骤</h3>
+                        <div class="practical-right-mobile">
+                            <div id="qrcode" class="img-01 img-responsive"><canvas width="200" height="200"></canvas></div> 
+                            <img src="./数据抽取与统计_files/p-mobile-01.png" class="img-02 img-responsive">
+                        </div>
+                    </section>
+                </div>
+                <!--/.col-md-9 col-sm-9-->
+            </div>
+            <!--/.row-->
+        </div>
+        <!--teacher-->
+    </div>
+    
+     <!-- 1.29 add 手机自适应，左右箭头切换，此div效果只在移动端显示【开始】-->
+    <div id="toggle_arrow">
+        <!--
+            菜单数vi的值：前置条件的list值 + （实验任务 + 完成效果预览）的list值
+                         即：$(".p-precondition ul li").length + $(".p_progress ul li").length
+            左边（left_arrow）vi的值为菜单数的最小值，默认为0，无需改变。
+            右边（right_arrow）vi的值为菜单数的最大值，从后台取出。
+        -->
+        <div class="left_arrow" vi="0">
+            <span class="left_arrow_ico">&nbsp;</span>
+        </div>
+        <div class="right_arrow" vi="3">
+            <span class="right_arrow_ico">&nbsp;</span>
+        </div>
+    </div>
+    <!-- 1.29 add 手机自适应，左右箭头切换，此div只在移动端显示【结束】-->
+    
+</main>
+<!--2015.12.7新增-->
+<div class="bg_practical"></div>
+<!--bg_practical-->
+<div class="bg_practical_preview">
+    
+			<img src="./数据抽取与统计_files/u_1477636196623.png">
+	
+	
+</div>
+
+<!--2016.4.19 添加（返回顶部功能）-->
+<div class="backNav" style="display: block;">
+    <span class="top_arrow"></span>
+</div>
+
+<!-- 1.25 add start-->
+<!-- 手机图片放大弹出模态框【开始】 -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="pswp__bg"></div>
+    <div class="pswp__scroll-wrap">
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar" style="opacity:0;">
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__loading-indicator">
+                <div class="pswp__loading-indicator__line"></div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip">
+                    <a href="http://www.csgmooc.com/01712/#" class="pswp__share--facebook"></a>
+                    <a href="http://www.csgmooc.com/01712/#" class="pswp__share--twitter"></a>
+                    <a href="http://www.csgmooc.com/01712/#" class="pswp__share--pinterest"></a>
+                    <a href="http://www.csgmooc.com/01712/#" download="" class="pswp__share--download"></a>
+                </div>
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 手机图片放大弹出模态框【结束】 -->
+<!--手机图片放大【开始】-->
+<script type="text/javascript">
+    (function () {//获取图片原始尺寸
+        // 读取尺寸大小
+        var imgReady = (function () {
+            var list = [], intervalId = null,
+            // 用来执行队列
+                    tick = function () {
+                        var i = 0;
+                        for (; i < list.length; i++) {
+                            list[i].end ? list.splice(i--, 1) : list[i]();
+                        }
+                        ;
+                        !list.length && stop();
+                    },
+            // 停止所有定时器队列
+                    stop = function () {
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    };
+            return function (url, ready, load, error) {
+                var onready, width, height, newWidth, newHeight, img = new Image();
+                img.src = url;
+                // 如果图片被缓存，则直接返回缓存数据
+                if (img.complete) {
+                    ready.call(img);
+                    load && load.call(img);
+                    return;
+                }
+                ;
+                width = img.width;
+                height = img.height;
+                img.onerror = function () {
+                    error && error.call(img);
+                    onready.end = true;
+                    img = img.onload = img.onerror = null;
+                };
+                // 图片尺寸就绪
+                onready = function () {
+                    newWidth = img.width;
+                    newHeight = img.height;
+                    if (newWidth !== width || newHeight !== height || newWidth * newHeight > 1024) {
+                        // 如果图片已经在其他地方加载可使用面积检测
+                        ready.call(img);
+                        onready.end = true;
+                    }
+                    ;
+                };
+                onready();
+                // 完全加载完毕的事件
+                img.onload = function () {
+                    // onload在定时器时间差范围内可能比onready快
+                    // 这里进行检查并保证onready优先执行
+                    !onready.end && onready();
+                    load && load.call(img);
+                    // IE gif动画会循环执行onload，置空onload即可
+                    img = img.onload = img.onerror = null;
+                };
+                // 加入队列中定期执行
+                if (!onready.end) {
+                    list.push(onready);
+                    // 无论何时只允许出现一个定时器，减少浏览器性能损耗
+                    if (intervalId === null) intervalId = setInterval(tick, 40);
+                }
+                ;
+            };
+        })();
+    })();
+</script>
+<script src="./数据抽取与统计_files/initPhotoSwipeFromDOM.js"></script>
+<!-- 初始化图片放大函数 -->
+<script>initPhotoSwipeFromDOM('.gallery');</script>
+<script type="text/javascript">
+//  点击菜单切换按钮。
+ $(function(){
+     $(".right_arrow").attr("vi",$(".p-precondition ul li").length+$(".p_progress ul li").length);
+ });
+</script>
+
+<!--手机图片放大【结束】-->
+<script src="./数据抽取与统计_files/main.js"></script>
+<!-- 1.25 add end-->
+<script type="text/javascript">
+//由于没有找到样式中的代码所以在此用js添加
+$(".cursor_zoom ").css("max-width","94%");
+</script>
+
+
+</body></html>

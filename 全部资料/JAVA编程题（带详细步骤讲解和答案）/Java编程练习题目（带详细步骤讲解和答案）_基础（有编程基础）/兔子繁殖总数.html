@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<!-- saved from url=(0071)http://www.csgmooc.com/01712/teacher/practicalCenter/practicalPractical -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--<base href="http://www.csgmooc.com:80/01712/">--><base href=".">
+
+  	<title>学吧在线-实训步骤</title>
+     <meta name="renderer" content="webkit">
+	 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	 <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, user-scalable=no,initial-scale=1.0;">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<!--
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	-->
+		   <!-- Main Style Sheet -->
+		    <link rel="stylesheet" href="./兔子繁殖总数_files/main.css">
+		    <link rel="stylesheet" href="./兔子繁殖总数_files/reset.css">
+		    <link href="./兔子繁殖总数_files/photoswipe.css" rel="stylesheet">
+		    <link href="./兔子繁殖总数_files/default-skin.css" rel="stylesheet">
+		   
+		    <link rel="stylesheet" type="text/css" href="./兔子繁殖总数_files/animate.css">
+  			<link rel="stylesheet" type="text/css" href="./兔子繁殖总数_files/buttons.css">
+  			<style type="text/css">
+          	img {
+                max-width: 100%;
+              }
+    
+    		</style>
+		    <!-- Respond.js for IE 8 or less only -->
+		    <script>window.jQuery || document.write('<script src="commjs/jquery-1.9.1.min.js"><\/script>')</script><script src="./兔子繁殖总数_files/jquery-1.9.1.min.js"></script>
+		    <script src="./兔子繁殖总数_files/plugins.js"></script>
+		    <script src="./兔子繁殖总数_files/photoswipe.min.js"></script>
+		    <script src="./兔子繁殖总数_files/photoswipe-ui-default.min.js"></script>
+		    <script src="./兔子繁殖总数_files/jquery.noty.packaged.min.js" type="text/javascript"></script>
+  			<script src="./兔子繁殖总数_files/notify.js" type="text/javascript"></script>
+		    <script type="text/javascript" src="./兔子繁殖总数_files/jquery.qrcode-0.12.0.min.js"></script>
+		    
+		  <script type="text/javascript">
+		  
+		  var body_wid = screen.width;
+		  
+		  function toBack(taskid){
+		  	var t_form = $("<form action='teacher/practicalCenter/videolearn' name='taskForm' method='post'>"+
+		     		 "<input type='hidden' name='taskid' value='"+taskid+"'/>" +
+		     		 "</form>");
+		  	$("body").append(t_form);
+		  	$("form[name='taskForm']").submit();   
+		  }
+		  
+		   function toexBack(experimentid){
+		  	var t_form = $("<form action='teacher/practicalCenter/videolearn' name='taskForm' method='post'>"+
+		  			 "<input type='hidden' name='taskid' value='0'/>" +
+		     		 "<input type='hidden' name='experimentid' value='"+experimentid+"' />" +
+		     		 "<input type='hidden' name='courseid' value="+''+" >" +
+		     		 "</form>");
+		  	$("body").append(t_form);
+		  	$("form[name='taskForm']").submit();   
+		  }
+		  
+		  //点击知识点和答案，页面跳转到其所在div事件
+			function onScoll(obj) {
+			    $("html,body").stop(true);
+			    $("html,body").animate({scrollTop: $(obj).offset().top}, 1000);
+			}
+		  
+		  $(function(){
+		  		
+				$("#warning").click(function(){
+					
+					mNotify.toast("warning","无可用虚机，请联系供应商获取虚机授权。");
+				
+				});
+	    	//为 场景任务 第一个<li>添加选中样式
+	    	
+	       //场景任务
+	    	$(".p-about-knowloge").click(function(){
+	    	   var vi=$(this).attr("vi");
+	            if($(this).find("i").hasClass("i-border-down")){
+	                $(this).find("i").removeClass("i-border-down").addClass("i-border-up");
+	            }else{
+	                $(this).find("i").removeClass("i-border-up").addClass("i-border-down");
+	               
+	    	    $("#startstudy"+vi+" a").remove();
+	    		var taskid=$(this).attr("taskid");
+	    		var experimentid=$(this).attr("experimentid");
+	    		if(typeof(taskid)!="undefined"){
+	    		 $("#knowledgelist"+vi+" li").remove();
+	    		var url="teacher/practicalCenter/loadChapter";
+	    		var args={"taskid":taskid};
+	    		$.getJSON(url,args,function(data){
+	    		
+	    		if(data.tklist.length>0){
+	    		$.each(data.tklist,function(i,k){
+	    			$("#knowledgelist"+vi).append("<li><a href='javascript:void(0)'>"+k.knowledge.name+"<span class='pull-right'>"+numberToTime(k.knowledge.videolen)+"</span></a></li>");
+	    			
+	    		   });
+	    		
+	    		$("#startstudy"+vi).append("<a class='p-look-answer-see p-buttn btn-blue' href='javascript:toBack("+taskid+")'  type='button'  style='border-radius: 5px;'>开始学习</a>");
+	    		}
+	    	});
+	    		}
+	    		   if(typeof(experimentid)!="undefined"){
+	    		 $("#eknowledgelist li").remove();
+	    		var url="teacher/practicalCenter/loadKnowledgeByExperiment";
+	    		var args={"experimentid":experimentid};
+	    		$.getJSON(url,args,function(data){
+	    		
+	    		if(data.eklist.length>0){
+	    		$.each(data.eklist,function(i,k){
+	    			$("#eknowledgelist").append("<li><a href='javascript:void(0)'>"+k.knowledge.name+"<span class='pull-right'>"+numberToTime(k.knowledge.videolen)+"</span></a></li>");
+	    			
+	    		   });
+	    		
+	    		$("#startstudy"+vi).append("<a class='p-look-answer-see p-buttn btn-blue' href='javascript:toexBack("+experimentid+")'  type='button'  style='border-radius: 5px;'>开始学习</a>");
+	    		}
+	    		});
+	    		}
+	    		
+	    		
+	    
+	            }
+	            $(this).next().find("i").removeClass("i-border-down").addClass("i-border-up");
+	            $("#practical-answer" + vi).css("display","none");
+	            $("#practical-knowledge" + vi).slideToggle(500);
+	            
+			 	onScoll("#practical-knowledge" + vi);//1.29添加
+	    	
+	     });
+	     //查看答案
+	         $(".p-look-answer-see").click(function(){
+
+	        var vi=$(this).attr("vi");
+
+	        if($(this).find("i").hasClass("i-border-down")){
+	            $(this).find("i").removeClass("i-border-down").addClass("i-border-up");
+	        }else{
+	            $(this).find("i").removeClass("i-border-up").addClass("i-border-down");
+	        }
+	        $(this).prev().find("i").removeClass("i-border-down").addClass("i-border-up");
+	        $("#practical-knowledge" + vi).css("display","none");
+	        $("#practical-answer" + vi).fadeToggle(500);
+	        
+	         onScoll("#practical-answer" + vi);//1.29添加
+	    }); 
+
+	        
+	     var numberToTime=function(number){
+	     var HOUR_MILLS = 60*60*1000;
+	     var MIN_MILLS = 60*1000;
+	     var SEN_MILLS = 1000;
+	   
+	         var total_time = number*1000;
+				
+				var show_hour = parseInt(total_time / HOUR_MILLS);
+			    var show_min = parseInt((total_time - (show_hour*HOUR_MILLS)) / MIN_MILLS);
+			    var show_sen = parseInt((total_time - (show_hour*HOUR_MILLS + show_min*MIN_MILLS)) / SEN_MILLS);
+				
+			    var time = pad(show_hour,2)+":"+pad(show_min,2)+":"+pad(show_sen,2);
+			   
+			    return time;
+	     }
+	 
+	   });
+    </script>
+    
+    <style type="text/css">
+    	.history {
+   	 		color: #fff !important;
+    		margin-right: 10px
+		}
+
+		.history_img {
+   			 margin-top: 13px;
+    		 margin-right: 5px;
+		}
+    </style>
+    
+  </head>
+  
+ <body class="homepage" data-spy="scroll" data-target=".navbar" style="overflow-y:scroll;">
+<!--[if lte IE 7]>
+<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to
+    improve your experience.</p>
+<![endif]-->
+  <header role="header" style="height: 48px; margin-right: 0; padding-right: 0;">
+      <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+        <div class="container" style=" color: #ffffff">
+            <div class="row">
+                <div class="col-md-8 nam">
+              		<div style="line-height: 50px">
+                	<!--以下链接由服务端确定返回地址，不同的转入对应不同的页面转出-->
+                	
+                    
+                    
+                    <a href="javascript:history.go(-1)" class="history" id="back">
+	                            <img src="./兔子繁殖总数_files/back.png" class="history_img pull-left">
+	                           	 返回
+	                        </a>
+                    <b>SE_JAVA_EXP_E019</b>
+                      <!-- 适配二维码 -->
+                       <!--  <script type="text/javascript" src="js/jquery.qrcode-0.12.0.min.js"></script> -->
+					      <script>
+					    jQuery(function(){
+					    jQuery('#qrcode').qrcode({
+						width   : 100,
+						height  : 100,
+						text	: "http://www.csgmooc.com:80/01712/mob/practicalCenter/scan?experimentid=7"					});
+					});
+					</script>
+                    <!-- 结束 -->
+                   
+                    
+            	</div>
+                </div>
+                  <div class="col-md-2 pull-right ">
+                      <!-- <button class="p-buttn btn-blue resul" style="width: 135px; border-radius: 5px; box-shadow: none"><img src="img/p-submit-icon.png" style="margin-right: 10px;margin-top: -7px;">提交结果</button><span class="glyphicon glyphicon-th-list" style='color:#fff'></span> -->
+                      <span class="ioc_list" style="background:#fff;color:#fff;width:20px;height:20px;background:url(&quot;practical/img/ioc_list.png&quot;);margin-top:15px;cursor:pointer"></span>
+                  </div>
+            </div><!--/.row-->
+        </div><!--/.container -->
+      </nav>
+  </header>
+<!--/.header-->
+<input type="hidden" id="nums" value="0">
+<main role="main">
+    <div class="container">
+        <div class="practical">
+            <div class="row">
+                <div class="col-md-3 col-sm-3">
+                    <section class="practical-left">
+                        <div class="p-left-list-fixed">
+                            <!-- <div class="p-enter">
+                              	<a href="javascript:void(0)" id="warning"> <span class="icon fa fa-desktop" style="margin-right: 10px;"></span > 进入虚拟机( Q ) <span
+                                        class="icon fa fa-play " style="margin-left: 70px;"></span>
+                                </a>
+                                </div> -->
+                               <div class="p-left-list">
+                                
+                                <!--/.p-precondition-->
+                                
+                                
+                                 <div class="p-precondition" style="display: none">
+                                    <ul>
+                                        <li class="p-precondition-active" style="border-radius: 5px 5px 0 0;"><a href="http://www.csgmooc.com/01712/#"> <span>&nbsp;</span><i style="margin-right: 5px;">+</i>前置条件</a></li>
+                     
+                                    </ul>
+                                </div><!--/.p-precondition-->
+                                 <div class="p_progress">
+                                    <ul>
+                                        <li liflag="0" class="p_progress_active"><a href="javascript:void(0)"><span>&nbsp;</span>实验任务1</a></li>
+                                       
+                                        <li><a href="javascript:void(0)"><span>&nbsp;</span> 完成效果预览</a></li>
+                                    </ul>
+                                </div><!--/.p_progress-->
+                                
+                                
+                                
+                                <div class="p-mobile-development">
+                                    <a href="javascript:void(0)"> <span>&nbsp;</span><i></i>移动端开发步骤</a>
+                                </div>
+                            </div>
+                            <!--/.p-left-list-->
+                        </div>
+                        <!--p-left-list-fixed-->
+                    </section>
+                    <!--/.practical-left-->
+                </div>
+                
+                <div class="col-md-9" id="showtasks">
+                   
+                    <!--/.p-task01-->
+                    <!-- 场景任务 -->
+                    
+                    
+                    <!-- 实验案例 -->
+                    
+                      <section class="practical-right p-task" id="taskli0" style="display: block">
+                        <h3><!-- 1.25 update start-->
+                            <!--<span>&nbsp;</span>-->
+                            <span class="border">&nbsp;</span>
+                            <!-- 1.25 update end-->16版.兔子繁殖总数</h3>
+							<!-- <p class="p_task_type"></p> -->
+                       <!--  <p><i>任务类型：按要求写代码</i></p> -->
+
+                        <div class="practical-right-cont">
+                           <p style="line-height: 1.5em;"><strong><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);">1、实验要求</span></strong></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;">&nbsp; &nbsp; 本实验要求：以兔子繁殖为业务，简易计算银行复利问题。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);">1-1. 兔子繁殖业务说明：</span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-1.1. 一对兔子，从出生后第3个月起每个月生一对兔子。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-1.2. 小兔子长到第三个月后每个月又生一对兔子。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-1.3. 假如兔子都不死，求兔子的数量。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; </span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp;&nbsp;</span>1-2. 兔子繁殖数据逻辑：</span></span></p><p style="line-height: 1.5em; margin-bottom: 10px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-2.1. 根据业务说明可将兔子繁殖的数据逻辑罗列如下表：</span></p><p style="text-align: center;"><img src="./兔子繁殖总数_files/1474351619392096060.png" title="1474351619392096060.png" alt="1图片1.png"></p><p style="line-height: 1.5em; margin-top: 10px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-2.2. 1，2两月由于未达到繁殖期，因此始终为一对兔子（A）</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-2.3. 3月兔子A开始繁殖，因此为两对兔子（A和B）。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-2.4. 4月兔子A继续繁殖，因此为三对兔子（A、B、C）。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-2.5. 5月兔子A继续繁殖，但兔子B也到达了繁殖期，因此为五对兔子（A~E）。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-2.6. 以此类推得上表。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-2.7. <span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(255, 0, 0);">算法：当月数大于等于3时，本月兔子数量 = 上月 + 上上月的兔子数量<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 0, 0);">。</span></span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp;</span>1-3. 创建工程并配置环境：</span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-3.1. 限制1. 工程取名：SE_JAVA_EXP_E019。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-3.2. 限制2. 创建包，取名：cn.campsg.java.experiment。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-3.3. 限制3. 创建类，类名：RabbitNum。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp;</span>1-4. 获取用户输入的数值边界（月份）。</span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-4.1. 提示语句为："<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 112, 192);">请输入兔子繁殖的月份：</span>"</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);">1-5. 计算兔子繁殖总数：</span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-5.1. 限制1. 繁殖函数取名：rabbit。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-5.2. 限制2. 繁殖函数定义于RabbitNum类内。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-5.3. 循环1~用户输入的月份，按<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(255, 0, 0);">兔子繁殖数据逻辑</span>，计算每月兔子繁殖的数量。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-5.4. 累加每月的兔子繁殖数量，并向函数外返回。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);">1-6. 输出结果：</span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-6.1. RabbitNum类的main函数获取兔子繁殖数量的计算结果。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1-6.2. 向控制台输出："<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 112, 192);">第</span>" + 用户输入的月份 + "<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 112, 192);">个月，兔子数量是：</span>" + 兔子繁殖数量</span></p><p style="line-height: 1.5em;"><span style="color: rgb(0, 176, 240);"><strong><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;">2、<strong style="color: rgb(0, 176, 240); font-size: 16.3636360168457px; line-height: 24px; white-space: normal;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;">实现思路</span></strong></span></strong></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);">2-1. 按实验要求创建工程并配置环境。</span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240); line-height: 24px;">&nbsp; &nbsp;&nbsp;</span>2-2. 获取用户输入的数值边界（月份）：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>2-2.1. 在main函数内获取用户输入的月份。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>2-2.2. 打印提示用户输入月份的语句："<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 112, 192);">请输入兔子繁殖的月份：</span>"</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>2-2.3. 创建整型变量（month）接收用户输入的月份。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>2-2.4. 通过Scanner获取用户输入的数据。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>2-2.5. 将获取的数值存储入整型变量（month）中。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);">2-3. 计算兔子繁殖总数：</span></span></p><p style="line-height: 1.5em; margin-bottom: 10px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>2-3.1. 在RabbitNum内定义静态的rabbit函数，形式如下：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"></span></p><table width="568" align="center"><tbody><tr class="firstRow"><td width="568" valign="top" style="padding: 0px 7px; border: 1px solid windowtext; background-color: rgb(238, 236, 225);"><p style="line-height: 1.75em; margin-top: 5px;"><strong><span style="font-family: 微软雅黑;font-size: 14px">&nbsp; </span></strong><span style="color: rgb(0, 176, 240);"><strong><span style="font-family: 微软雅黑; font-size: 14px;">+</span></strong><strong><span style="font-family: 微软雅黑; font-size: 14px;">&nbsp;提示</span></strong></span></p><p style="line-height: 1.75em;"><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">&nbsp; public</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">static</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">int</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;rabbit(</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">int</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">month</span><span style="font-family: Consolas;font-size: 14px">) {</span></p><p style="line-height: 1.75em; margin-bottom: 5px;"><span style="font-family: Consolas;font-size: 14px">&nbsp; }</span></p></td></tr></tbody></table><p style="line-height: 1.5em; margin-top: 10px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>2-3.2. 定义用于兔子繁殖业务计算的三个整型变量：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1）当前月的兔子总数，初始值为2。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>2）上个月兔子数量，初始值为2。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>3）上上个月兔子数量，初始值为2。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>提示：因为第1,2月不会繁殖兔子，所以定义都为2。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>2-3.3. 利用循环求出N个月的兔子数：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>1）循环范围：1~用户输入的月数。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>2）判断，如月份小于等于2，则不做任何处理（前两个月不会繁殖兔子）。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>提示：使用continue开始下一轮循环。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>3）超过2个月，则计算兔子繁殖数量：<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(255, 0, 0);">数量 =上月 + 上上月兔子数量</span>。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>4）为进入下一个月份计算做准备：</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>a) 将上月兔子数量 赋值给上上月变量。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>b) 将本月兔子数量 赋值给上月变量。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>5）循环结果后，返回总计算结果。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;</span><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 176, 240);">2-4. 输出结果：</span></span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>2-4.1. main函数调用rabbit函数，并传入用户输入的月份数值。</span></p><p style="line-height: 1.5em;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px;"><span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; line-height: 24px;">&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span>2-4.2. 获取结果后，向控制台打印："<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 112, 192);">第</span>" + 用户输入的月份 + "<span style="font-family: 微软雅黑, &#39;Microsoft YaHei&#39;; font-size: 14px; color: rgb(0, 112, 192);">个月，兔子数量是：</span>" + 兔子繁殖数量</span></p>
+                        </div>
+                        <!--/.practical-right-cont-->
+                        <div class="form-group practical-right-btn">
+                            <a class="p-about-knowloge" id="experimenknowledge" experimentid="7" href="javascript:void(0)" vi="0">相关知识点<i class="i-border-up"></i></a>
+                            
+                            
+                           <!-- 从电脑登录，显示答案 -->
+                         
+                          
+                          	<a class="p-look-answer-see p-buttn btn-blue" type="button" href="javascript:void(0)" vi="0">查看答案<i class="i-border-down"></i></a>
+                          
+                          
+                           
+                           
+					     
+                        </div>
+                        <!--/.practical-right-btn-->
+                    </section>
+       				  <div class="practical-right-toggle-knowlage" id="practical-knowledge0" style="display: none;">
+                        <h3><span>&nbsp;</span>任务知识点</h3>
+                        <ul id="eknowledgelist">
+                          
+                           
+                        </ul>
+                        <div class="practical-right-btn" id="startstudy0">
+                       
+                        </div>
+                        <!--/.practical-right-btn-->
+                    </div>
+                    <!--/.practical-right-toggle-knowlage-->
+                    <div unselectable="on" style="user-select: none; display: block;" onselectstart="return false;" class="practical-right-toggle-answer" id="practical-answer0">
+                        <h3><!-- 1.25 update start-->
+                            <!--<span>&nbsp;</span>-->
+                            <span class="border">&nbsp;</span>
+                            <!-- 1.25 update end-->
+                            	任务答案</h3>
+
+                        <div class="practical-right-answer-cont">
+                            <p>
+                                  </p><table width="560"><tbody><tr class="firstRow"><td width="560" valign="top" style="padding: 0px 7px; border: 1px solid windowtext;"><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">public</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">class</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;RabbitNum {</span></p><p><br></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">&nbsp; &nbsp; public</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">static</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">void</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;main(String[] </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">args</span><span style="font-family: Consolas;font-size: 14px">) {</span></p><p><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>//<span style="font-family:宋体">获取用户输入的月份</span></span></p><p><span style="font-family: Consolas;font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>Scanner </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">in</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= </span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">new</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;Scanner(System.</span><strong><em><span style="font-family: Consolas;color: rgb(0, 0, 192);font-size: 14px">in</span></em></strong><span style="font-family: Consolas;font-size: 14px">);</span></p><p><span style="font-family: Consolas;font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>System.</span><strong><em><span style="font-family: Consolas;color: rgb(0, 0, 192);font-size: 14px">out</span></em></strong><span style="font-family: Consolas;font-size: 14px">.println(</span><span style=";font-family:Consolas;color:rgb(42,0,255);font-size:14px">"<span style="font-family:宋体">请输入月份：</span><span style="font-family:Consolas">"</span></span><span style="font-family: Consolas;font-size: 14px">);</span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>int</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">month</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">in</span><span style="font-family: Consolas;font-size: 14px">.nextInt();</span></p><p><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>in</span><span style="font-family: Consolas;font-size: 14px">.close();</span></p><p><br></p><p><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>//<span style="font-family:宋体">获取兔子繁殖的结果</span></span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>int</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">count</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= </span><em><span style="font-family: Consolas;font-size: 14px">rabbit</span></em><span style="font-family: Consolas;font-size: 14px">(</span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">month</span><span style="font-family: Consolas;font-size: 14px">);</span></p><p><span style="font-family: Consolas;font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>System.</span><strong><em><span style="font-family: Consolas;color: rgb(0, 0, 192);font-size: 14px">out</span></em></strong><span style="font-family: Consolas;font-size: 14px">.println(</span><span style=";font-family:Consolas;color:rgb(42,0,255);font-size:14px">"<span style="font-family:宋体">第</span><span style="font-family:Consolas">"</span></span><span style="font-family: Consolas;font-size: 14px">&nbsp;+ </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">month</span><span style="font-family: Consolas;font-size: 14px">&nbsp;+ </span><span style=";font-family:Consolas;color:rgb(42,0,255);font-size:14px">"<span style="font-family:宋体">个月，兔子数量是：</span><span style="font-family:Consolas">"</span></span><span style="font-family: Consolas;font-size: 14px">&nbsp;+ </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">count</span><span style="font-family: Consolas;font-size: 14px">);</span></p><p><span style="font-family:Consolas;font-size:14px">&nbsp;</span></p><p><span style="font-family: Consolas;font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>}</span></p><p><span style="font-family:Consolas;font-size:14px">&nbsp;</span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>/**</span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px">&nbsp;<strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>* <span style="font-family:宋体">兔子繁殖结算</span></span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>&nbsp;* </span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>&nbsp;* </span><strong><span style="font-family: Consolas;color: rgb(127, 159, 191);font-size: 14px">@param</span></strong><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px">&nbsp;month <span style="font-family:宋体">月数限制</span></span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px">&nbsp;<strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>* </span><strong><span style="font-family: Consolas;color: rgb(127, 159, 191);font-size: 14px">@return</span></strong><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px">&nbsp;兔子的数量</span></p><p><span style=";font-family:Consolas;color:rgb(63,95,191);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>&nbsp;*/</span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>public</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">static</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">int</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;rabbit(</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">int</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">month</span><span style="font-family: Consolas;font-size: 14px">) {</span></p><p><span style="font-family:Consolas;font-size:14px">&nbsp;</span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>int</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">result</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= 2;</span> &nbsp;<span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">//<span style="font-family:宋体">兔子的数量，默认为一对（</span><span style="font-family:Consolas">2</span><span style="font-family:宋体">只）</span></span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>int</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">lastMonth</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= 2;</span> <span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">//<span style="font-family:宋体">上月兔子数量，默认为一对（</span><span style="font-family:Consolas">2</span><span style="font-family:宋体">只）</span></span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>int</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">lastMonth2</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= 2; &nbsp;</span><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px">//<span style="font-family:宋体">上上个月兔子数量，默认为一对（</span><span style="font-family:Consolas">2</span><span style="font-family:宋体">只）</span></span></p><p><br></p><p><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>//<span style="font-family:宋体">循环计算从第</span><span style="font-family:Consolas">1</span><span style="font-family:宋体">个月</span><span style="font-family:Consolas">-</span><span style="font-family:宋体">第</span><span style="font-family:Consolas">month</span><span style="font-family:宋体">个月的兔子繁殖结果</span></span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>for</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;(</span><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px">int</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><span style="font-family:Consolas;color:rgb(106,62,62);font-size:14px">i</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= 1; </span><span style="font-family:Consolas;color:rgb(106,62,62);font-size:14px">i</span><span style="font-family: Consolas;font-size: 14px">&nbsp;&lt;= </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">month</span><span style="font-family: Consolas;font-size: 14px">; </span><span style="font-family:Consolas;color:rgb(106,62,62);font-size:14px">i</span><span style="font-family: Consolas;font-size: 14px">++) {</span></p><p><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>//<span style="font-family:宋体">前两个月兔子数量始终不变，繁殖从第三个月开始</span></span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>if</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;(</span><span style="font-family:Consolas;color:rgb(106,62,62);font-size:14px">i</span><span style="font-family: Consolas;font-size: 14px">&nbsp;&lt;= 2) {</span></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>continue</span></strong><span style="font-family: Consolas;font-size: 14px">;</span></p><p><span style="font-family: Consolas;font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>}</span></p><p><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>//<span style="font-family:宋体">每月繁殖结果 </span><span style="font-family:Consolas">= </span><span style="font-family:宋体">上月兔子数量 </span><span style="font-family:Consolas">+ </span><span style="font-family:宋体">上上个月兔子数量</span></span></p><p><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>result</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">lastMonth</span><span style="font-family: Consolas;font-size: 14px">&nbsp;+ </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">lastMonth2</span><span style="font-family: Consolas;font-size: 14px">;</span></p><p><span style=";font-family:Consolas;color:rgb(63,127,95);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>// <span style="font-family:宋体">将上月数量赋给上上月，本月赋给上月，用于下个月量计算</span></span></p><p><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>lastMonth2</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">lastMonth</span><span style="font-family: Consolas;font-size: 14px">;</span></p><p><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>lastMonth</span><span style="font-family: Consolas;font-size: 14px">&nbsp;= </span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">result</span><span style="font-family: Consolas;font-size: 14px">;</span></p><p><span style="font-family: Consolas;font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>}</span></p><p><br></p><p><strong><span style="font-family: Consolas;color: rgb(127, 0, 85);font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>return</span></strong><span style="font-family: Consolas;font-size: 14px">&nbsp;</span><span style=";font-family:Consolas;color:rgb(106,62,62);font-size:14px">result</span><span style="font-family: Consolas;font-size: 14px">;</span></p><p><span style="font-family: Consolas;font-size: 14px"><strong style="white-space: normal;"><span style="font-family: Consolas; color: rgb(127, 0, 85); font-size: 14px;">&nbsp; &nbsp;&nbsp;</span></strong>}</span></p><p><span style="font-family: Consolas;font-size: 14px">}</span></p></td></tr></tbody></table>
+                            <p></p>
+                        </div>
+
+                    </div>
+                    
+                    <!--/.p-task04-->
+                    <section class="practical-right p-task" id="preImage">
+                        <h3><!-- 1.25 update start-->
+                            <!--<span>&nbsp;</span>-->
+                            <span class="border">&nbsp;</span>
+                            <!-- 1.25 update end-->完成效果预览</h3>
+                        <div class="practical-right-preview">
+                 
+					<img src="./兔子繁殖总数_files/u_1474350857394.png" style=" cursor: url(practical/img/search.ico), auto" class="img-responsive">
+				
+				
+                        </div>
+                    </section>
+                    <!--/.p-task05-->
+                    <section class="practical-right p-task" id="mobile-development">
+                        <h3><!-- 1.25 update start-->
+                            <!--<span>&nbsp;</span>-->
+                            <span class="border">&nbsp;</span>
+                            <!-- 1.25 update end-->移动端开发步骤</h3>
+                        <div class="practical-right-mobile">
+                            <div id="qrcode" class="img-01 img-responsive"><canvas width="200" height="200"></canvas></div> 
+                            <img src="./兔子繁殖总数_files/p-mobile-01.png" class="img-02 img-responsive">
+                        </div>
+                    </section>
+                </div>
+                <!--/.col-md-9 col-sm-9-->
+            </div>
+            <!--/.row-->
+        </div>
+        <!--teacher-->
+    </div>
+    
+     <!-- 1.29 add 手机自适应，左右箭头切换，此div效果只在移动端显示【开始】-->
+    <div id="toggle_arrow">
+        <!--
+            菜单数vi的值：前置条件的list值 + （实验任务 + 完成效果预览）的list值
+                         即：$(".p-precondition ul li").length + $(".p_progress ul li").length
+            左边（left_arrow）vi的值为菜单数的最小值，默认为0，无需改变。
+            右边（right_arrow）vi的值为菜单数的最大值，从后台取出。
+        -->
+        <div class="left_arrow" vi="0">
+            <span class="left_arrow_ico">&nbsp;</span>
+        </div>
+        <div class="right_arrow" vi="3">
+            <span class="right_arrow_ico">&nbsp;</span>
+        </div>
+    </div>
+    <!-- 1.29 add 手机自适应，左右箭头切换，此div只在移动端显示【结束】-->
+    
+</main>
+<!--2015.12.7新增-->
+<div class="bg_practical"></div>
+<!--bg_practical-->
+<div class="bg_practical_preview">
+    
+			<img src="./兔子繁殖总数_files/u_1474350857394.png">
+	
+	
+</div>
+
+<!--2016.4.19 添加（返回顶部功能）-->
+<div class="backNav" style="display: none;">
+    <span class="top_arrow"></span>
+</div>
+
+<!-- 1.25 add start-->
+<!-- 手机图片放大弹出模态框【开始】 -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="pswp__bg"></div>
+    <div class="pswp__scroll-wrap">
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar" style="opacity:0;">
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__loading-indicator">
+                <div class="pswp__loading-indicator__line"></div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip">
+                    <a href="http://www.csgmooc.com/01712/#" class="pswp__share--facebook"></a>
+                    <a href="http://www.csgmooc.com/01712/#" class="pswp__share--twitter"></a>
+                    <a href="http://www.csgmooc.com/01712/#" class="pswp__share--pinterest"></a>
+                    <a href="http://www.csgmooc.com/01712/#" download="" class="pswp__share--download"></a>
+                </div>
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 手机图片放大弹出模态框【结束】 -->
+<!--手机图片放大【开始】-->
+<script type="text/javascript">
+    (function () {//获取图片原始尺寸
+        // 读取尺寸大小
+        var imgReady = (function () {
+            var list = [], intervalId = null,
+            // 用来执行队列
+                    tick = function () {
+                        var i = 0;
+                        for (; i < list.length; i++) {
+                            list[i].end ? list.splice(i--, 1) : list[i]();
+                        }
+                        ;
+                        !list.length && stop();
+                    },
+            // 停止所有定时器队列
+                    stop = function () {
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    };
+            return function (url, ready, load, error) {
+                var onready, width, height, newWidth, newHeight, img = new Image();
+                img.src = url;
+                // 如果图片被缓存，则直接返回缓存数据
+                if (img.complete) {
+                    ready.call(img);
+                    load && load.call(img);
+                    return;
+                }
+                ;
+                width = img.width;
+                height = img.height;
+                img.onerror = function () {
+                    error && error.call(img);
+                    onready.end = true;
+                    img = img.onload = img.onerror = null;
+                };
+                // 图片尺寸就绪
+                onready = function () {
+                    newWidth = img.width;
+                    newHeight = img.height;
+                    if (newWidth !== width || newHeight !== height || newWidth * newHeight > 1024) {
+                        // 如果图片已经在其他地方加载可使用面积检测
+                        ready.call(img);
+                        onready.end = true;
+                    }
+                    ;
+                };
+                onready();
+                // 完全加载完毕的事件
+                img.onload = function () {
+                    // onload在定时器时间差范围内可能比onready快
+                    // 这里进行检查并保证onready优先执行
+                    !onready.end && onready();
+                    load && load.call(img);
+                    // IE gif动画会循环执行onload，置空onload即可
+                    img = img.onload = img.onerror = null;
+                };
+                // 加入队列中定期执行
+                if (!onready.end) {
+                    list.push(onready);
+                    // 无论何时只允许出现一个定时器，减少浏览器性能损耗
+                    if (intervalId === null) intervalId = setInterval(tick, 40);
+                }
+                ;
+            };
+        })();
+    })();
+</script>
+<script src="./兔子繁殖总数_files/initPhotoSwipeFromDOM.js"></script>
+<!-- 初始化图片放大函数 -->
+<script>initPhotoSwipeFromDOM('.gallery');</script>
+<script type="text/javascript">
+//  点击菜单切换按钮。
+ $(function(){
+     $(".right_arrow").attr("vi",$(".p-precondition ul li").length+$(".p_progress ul li").length);
+ });
+</script>
+
+<!--手机图片放大【结束】-->
+<script src="./兔子繁殖总数_files/main.js"></script>
+<!-- 1.25 add end-->
+<script type="text/javascript">
+//由于没有找到样式中的代码所以在此用js添加
+$(".cursor_zoom ").css("max-width","94%");
+</script>
+
+
+</body></html>
